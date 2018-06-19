@@ -1,0 +1,21 @@
+{
+    "name": "vip9008/yii2-MDC",
+    "description": "Material Design Components for yii2 framework.",
+    "type": "yii2-extension",
+    "keywords": ["yii2", "extension", "MDC", "Material", "Google"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Hussain Almoamen",
+            "email": "Almoamen.M.H@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "vip9008\\MDC\\": ""
+        }
+    }
+}
