@@ -13,6 +13,9 @@
     "require": {
         "yiisoft/yii2": "*"
     },
+    "replace": {
+        "vip9008/yii2-materialgrid": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "vip9008\\MDC\\": ""
