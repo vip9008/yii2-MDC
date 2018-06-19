@@ -1,0 +1,12 @@
+!.gitignore
+
+# web directory
+web/_includes
+web/color
+web/components
+web/environment
+web/img
+web/layout
+web/typography
+web/usability
+web/*.php
