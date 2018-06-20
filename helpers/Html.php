@@ -115,7 +115,7 @@ class Html extends BaseHtml
             if ($support === null) {
                 $support = '';
             } else {
-                $support = static::tag('div', $support, ['class' => 'icon material-icon']);
+                $support = static::tag('div', $support, ['class' => 'icon']);
             }
         }
 
@@ -131,7 +131,7 @@ class Html extends BaseHtml
             if ($meta === null) {
                 $meta = '';
             } else {
-                $meta = static::tag('div', $meta, ['class' => 'meta material-icon']);
+                $meta = static::tag('div', $meta, ['class' => 'meta']);
             }
         }
 
