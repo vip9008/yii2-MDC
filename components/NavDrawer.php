@@ -17,26 +17,26 @@ use vip9008\MDC\assets\NavDrawerAsset;
  *      ```php
  *      [
  *          [
- *              'text' => [
+ *              'support' => [...],
+ *              'label' => [
  *                  'overline' => ['string' => 'Overline', 'options' => ['class' => 'text-secondary']],
  *                  'text' => ['string' => 'Title', 'options' => ['class' => 'text-primary']],
  *                  'secondary' => ['string' => 'Secondary', 'options' => ['class' => 'text-secondary']],
  *              ],
- *              'support' => [...],
  *              'meta' => [...],
  *              'url' => ['site/index'],
  *              'options' => [...],
  *          ],
  *          [
- *              'text' => 'Dropdown',
+ *              'label' => 'Dropdown',
  *              'items' => [
- *                   ['text' => 'Level 1 - Dropdown A', 'url' => '#', 'options' => [...]],
+ *                   ['label' => 'Level 1 - Dropdown A', 'url' => '#', 'options' => [...]],
  *                   '<div class="mdc-divider"></div>',
- *                   ['text' => 'Level 1 - Dropdown B', 'url' => '#'],
+ *                   ['label' => 'Level 1 - Dropdown B', 'url' => '#'],
  *              ],
  *          ],
  *          [
- *              'text' => 'Login',
+ *              'label' => 'Login',
  *              'url' => ['site/login'],
  *              'visible' => Yii::$app->user->isGuest
  *          ],
@@ -117,12 +117,12 @@ class NavDrawer extends \yii\base\Widget
 
         $listItem = [
             'support' => ArrayHelper::getValue($item, 'support', null),
-            'text' => ArrayHelper::getValue($item, 'text', false),
+            'label' => ArrayHelper::getValue($item, 'label', false),
             'meta' => ArrayHelper::getValue($item, 'meta', null),
         ];
 
-        if (!$listItem['text']) {
-            throw new InvalidConfigException("No 'text' option could be found.");
+        if (!$listItem['label']) {
+            throw new InvalidConfigException("No 'label' option could be found.");
         }
 
         $encodeLabel = ArrayHelper::getValue($item, 'encode', $this->encodeLabels);
@@ -170,12 +170,12 @@ class NavDrawer extends \yii\base\Widget
             }
 
             Html::addCssClass($options, 'interactive');
-            $listItem = Html::listItem($listItem['text'], $listItem['support'], $listItem['meta'], $options);
+            $listItem = Html::listItem($listItem['label'], $listItem['support'], $listItem['meta'], $options);
             return Html::tag('div', $listItem . $dropdownItems, $containerOptions);
         } else {
             $options['tag'] = 'a';
             $options['url'] = $url;
-            return Html::listItem($listItem['text'], $listItem['support'], $listItem['meta'], $options);
+            return Html::listItem($listItem['label'], $listItem['support'], $listItem['meta'], $options);
         }
     }
 
