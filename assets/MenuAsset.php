@@ -4,16 +4,18 @@ namespace vip9008\MDC\assets;
 
 use yii\web\AssetBundle;
 
-class TextField extends AssetBundle
+class MenuAsset extends AssetBundle
 {
     public $sourcePath = '@vip9008/MDC/web';
     public $css = [
-        "css/mdc.text.field.css",
+        "css/mdc.menu.css",
     ];
     public $js = [
-        "js/mdc.text.field.js",
+        "js/mdc.menu.js",
     ];
     public $depends = [
         'vip9008\MDC\assets\MaterialGrid',
+        'vip9008\MDC\assets\ListAsset',
+        'vip9008\MDC\assets\TextFieldAsset',
     ];
 }

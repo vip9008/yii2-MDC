@@ -4,17 +4,16 @@ namespace vip9008\MDC\assets;
 
 use yii\web\AssetBundle;
 
-class NavDrawer extends AssetBundle
+class TopAppBarAsset extends AssetBundle
 {
     public $sourcePath = '@vip9008/MDC/web';
     public $css = [
-        "css/mdc.nav.drawer.css",
+        "css/mdc.top.app.bar.css",
     ];
     public $js = [
-        "js/mdc.nav.drawer.js",
+        "js/mdc.top.app.bar.js",
     ];
     public $depends = [
         'vip9008\MDC\assets\MaterialGrid',
-        'vip9008\MDC\assets\List',
     ];
 }
