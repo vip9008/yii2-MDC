@@ -9,7 +9,7 @@ class Html extends BaseHtml
 {
     /**
      * Generates a List Item component (List Row).
-     * @param string|array $text: the component primary text part. Array example,
+     * @param string|array $text: the component primary text part. array example,
      *
      *   ```php
      *   [
@@ -19,7 +19,7 @@ class Html extends BaseHtml
      *   ];
      *   ```
      *
-     * @param string|array $support: the component supporting visual part. Array example,
+     * @param string|array $support: the component supporting visual part. array example,
      *
      *   ```php
      *   [
@@ -28,7 +28,7 @@ class Html extends BaseHtml
      *   ];
      *   ```
      *
-     * @param string|array $meta: the component metadata part. Array example,
+     * @param string|array $meta: the component metadata part. array example,
      *
      *   ```php
      *   [
@@ -52,12 +52,16 @@ class Html extends BaseHtml
      * @see https://almoamen.net/MDC/components/lists.php
      */
     public static function listItem($text, $support = null, $meta = null, $options = []) {
+        $encodeText = ArrayHelper::remove($options, 'encodeText', true);
+
         if (is_array($text)) {
             $overline = ArrayHelper::getValue($text, 'overline', []);
             if (!empty($overline)) {
                 $_options = ArrayHelper::getValue($overline, 'options', []);
                 static::addCssClass($_options, 'overline');
-                $overline = static::tag('div', ArrayHelper::getValue($overline, 'string', ''), $_options);
+                $string = ArrayHelper::getValue($overline, 'string', '');
+                $string = $encodeText ? static::encode($string) : $string;
+                $overline = static::tag('div', $string, $_options);
             } else {
                 $overline = '';
             }
@@ -66,7 +70,9 @@ class Html extends BaseHtml
             if (!empty($secondary)) {
                 $_options = ArrayHelper::getValue($secondary, 'options', []);
                 static::addCssClass($_options, 'secondary');
-                $secondary = static::tag('div', ArrayHelper::getValue($secondary, 'string', ''), $_options);
+                $string = ArrayHelper::getValue($secondary, 'string', '');
+                $string = $encodeText ? static::encode($string) : $string;
+                $secondary = static::tag('div', $string, $_options);
             } else {
                 $secondary = '';
             }
@@ -75,7 +81,9 @@ class Html extends BaseHtml
             if (!empty($text)) {
                 $_options = ArrayHelper::getValue($text, 'options', []);
                 static::addCssClass($_options, 'text');
-                $text = static::tag('div', $overline . ArrayHelper::getValue($text, 'string', '') . $secondary, $_options);
+                $string = ArrayHelper::getValue($text, 'string', '');
+                $string = $encodeText ? static::encode($string) : $string;
+                $text = static::tag('div', $overline . $string . $secondary, $_options);
             } else {
                 $text = static::tag('div', $overline . $secondary, ['class' => 'text']);
             }
@@ -95,7 +103,7 @@ class Html extends BaseHtml
             if ($support === null) {
                 $support = '';
             } else {
-                $support = static::tag('div', $support, ['class' => 'icon']);
+                $support = static::tag('div', $support, ['class' => 'icon material-icon']);
             }
         }
 
@@ -111,12 +119,17 @@ class Html extends BaseHtml
             if ($meta === null) {
                 $meta = '';
             } else {
-                $meta = static::tag('div', $meta, ['class' => 'meta']);
+                $meta = static::tag('div', $meta, ['class' => 'meta material-icon']);
             }
         }
 
         $tag = ArrayHelper::remove($options, 'tag', 'div');
         static::addCssClass($options, 'mdc-list-item');
+
+        if ($tag == 'a') {
+            $url = ArrayHelper::remove($options, 'url', '#');
+            return static::a($support . $text . $meta, $url, $options);
+        }
 
         return static::tag($tag, $support . $text . $meta, $options);
     }
