@@ -10,8 +10,11 @@ use vip9008\MDC\assets\NavDrawerAsset;
 /**
  * A widget to render a nav drawer component
  * @param array $options: nav container html options in terms of name-value pairs.
- * @param array $drawerType: nav drawer type. will be added as a css class. defaults to permanent
+ * @param string $drawerType: nav drawer type. will be added as a css class. defaults to permanent
  * supported drawer types are ['modal', 'persistent', 'permanent']
+ *
+ * @param string $primaryColor: component primary color.
+ * @param string $accentColor: component accent color (unused).
  * @param array $navItems: navigation items to be rendered inside the drawer. example,
  *
  *      ```php
@@ -47,8 +50,11 @@ use vip9008\MDC\assets\NavDrawerAsset;
  * @see vip9008\MDC\helpers\Html::listItem()
  * @see https://almoamen.net/MDC/components/lists.php
  *
- * @param string $primaryColor: component primary color.
- * @param string $accentColor: component accent color (unused).
+ * @param string $encodeLabels: wether to encode $navItems labels or not. Html::encode() will be used if true. defaults to true.
+ * @param string $activateItems: wether to add active class to currently active links or not. defaults to true.
+ * @param string $activateParents: wether to add active class to the parent of currently active links or not. defaults to true.
+ * @param string $route: current request route. defaults to null.
+ * @param string $params: current request params. defaults to null.
 */
 
 class NavDrawer extends \yii\base\Widget
@@ -63,8 +69,8 @@ class NavDrawer extends \yii\base\Widget
     public $encodeLabels = true;
     public $activateItems = true;
     public $activateParents = true;
-    public $route;
-    public $params;
+    public $route = null;
+    public $params = null;
 
     public function init()
     {
@@ -74,8 +80,6 @@ class NavDrawer extends \yii\base\Widget
 
         $this->options['id'] = 'mdc-nav-drawer';
         Html::addCssClass($this->options, $this->drawerType);
-
-        // begin mdc-nav-drawer container
 
         if ($this->route === null && Yii::$app->controller !== null) {
             $this->route = Yii::$app->controller->getRoute();

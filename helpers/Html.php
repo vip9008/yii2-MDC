@@ -57,33 +57,45 @@ class Html extends BaseHtml
         if (is_array($text)) {
             $overline = ArrayHelper::getValue($text, 'overline', []);
             if (!empty($overline)) {
-                $_options = ArrayHelper::getValue($overline, 'options', []);
-                static::addCssClass($_options, 'overline');
-                $string = ArrayHelper::getValue($overline, 'string', '');
-                $string = $encodeText ? static::encode($string) : $string;
-                $overline = static::tag('div', $string, $_options);
+                if (is_array($overline)) {
+                    $_options = ArrayHelper::getValue($overline, 'options', []);
+                    static::addCssClass($_options, 'overline');
+                    $string = ArrayHelper::getValue($overline, 'string', '');
+                    $string = $encodeText ? static::encode($string) : $string;
+                    $overline = static::tag('div', $string, $_options);
+                } else {
+                    $overline = static::tag('div', $overline, ['class' => 'overline']);
+                }
             } else {
                 $overline = '';
             }
             
             $secondary = ArrayHelper::getValue($text, 'secondary', []);
             if (!empty($secondary)) {
-                $_options = ArrayHelper::getValue($secondary, 'options', []);
-                static::addCssClass($_options, 'secondary');
-                $string = ArrayHelper::getValue($secondary, 'string', '');
-                $string = $encodeText ? static::encode($string) : $string;
-                $secondary = static::tag('div', $string, $_options);
+                if (is_array($secondary)) {
+                    $_options = ArrayHelper::getValue($secondary, 'options', []);
+                    static::addCssClass($_options, 'secondary');
+                    $string = ArrayHelper::getValue($secondary, 'string', '');
+                    $string = $encodeText ? static::encode($string) : $string;
+                    $secondary = static::tag('div', $string, $_options);
+                } else {
+                    $secondary = static::tag('div', $secondary, ['class' => 'secondary']);
+                }
             } else {
                 $secondary = '';
             }
             
             $text = ArrayHelper::getValue($text, 'text', []);
             if (!empty($text)) {
-                $_options = ArrayHelper::getValue($text, 'options', []);
-                static::addCssClass($_options, 'text');
-                $string = ArrayHelper::getValue($text, 'string', '');
-                $string = $encodeText ? static::encode($string) : $string;
-                $text = static::tag('div', $overline . $string . $secondary, $_options);
+                if (is_array($text)) {
+                    $_options = ArrayHelper::getValue($text, 'options', []);
+                    static::addCssClass($_options, 'text');
+                    $string = ArrayHelper::getValue($text, 'string', '');
+                    $string = $encodeText ? static::encode($string) : $string;
+                    $text = static::tag('div', $overline . $string . $secondary, $_options);
+                } else {
+                    $text = static::tag('div', $overline . $text . $secondary, ['class' => 'text']);
+                }
             } else {
                 $text = static::tag('div', $overline . $secondary, ['class' => 'text']);
             }
