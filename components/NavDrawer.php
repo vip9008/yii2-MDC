@@ -15,6 +15,28 @@ use vip9008\MDC\assets\NavDrawerAsset;
  *
  * @param string $primaryColor: component primary color.
  * @param string $accentColor: component accent color (unused).
+ * @param array $header: nav drawer header section. example,
+ *
+ *      ```php
+ *      [
+ *          'title' => 'Header Title',
+ *          'subtext' => 'Header Subtext',
+ *      ];
+ *      ```
+ *
+ *      ```php
+ *      [
+ *          'title' => [
+ *              'label' => 'Header Title',
+ *              'options' => [...],
+ *          ],
+ *          'subtext' => [
+ *              'label' => 'Header Subtext',
+ *              'options' => [...],
+ *          ],
+ *      ];
+ *      ```
+ *
  * @param array $navItems: navigation items to be rendered inside the drawer. example,
  *
  *      ```php
@@ -64,6 +86,9 @@ class NavDrawer extends \yii\base\Widget
     public $primaryColor = 'deep-purple-A700';
     public $accentColor = '';
 
+    // header params
+    public $header = [];
+
     // navigation items params
     public $navItems = [];
     public $encodeLabels = true;
@@ -91,7 +116,38 @@ class NavDrawer extends \yii\base\Widget
 
     public function run()
     {
-        return Html::tag('nav', $this->renderItems(), $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim']);
+        return Html::tag('nav', $this->renderHeader() . $this->renderItems(), $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim']);
+    }
+
+    public function renderHeader()
+    {
+        if (!empty($this->header)) {
+            $content = [];
+            $title = ArrayHelper::getValue($this->header, 'title', false);
+            $subtext = ArrayHelper::getValue($this->header, 'subtext', false);
+            if ($title) {
+                if (is_array($title)) {
+                    $options = ArrayHelper::getValue($title, 'options', []);
+                    Html::addCssClass($options, 'title');
+                    $content[] = Html::tag('div', ArrayHelper::getValue($title, 'label', ''), $options);
+                } else {
+                    $content[] = Html::tag('div', $title, ['class' => 'title']);
+                }
+            }
+            if ($subtext) {
+                if (is_array($subtext)) {
+                    $options = ArrayHelper::getValue($subtext, 'options', []);
+                    Html::addCssClass($options, 'subtext');
+                    $content[] = Html::tag('div', ArrayHelper::getValue($subtext, 'label', ''), $options);
+                } else {
+                    $content[] = Html::tag('div', $subtext, ['class' => 'subtext']);
+                }
+            }
+
+            return Html::tag('div', implode("\n", $content), ['class' => 'header']);
+        } else {
+            return '';
+        }
     }
 
     public function renderItems()
