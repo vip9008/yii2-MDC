@@ -103,6 +103,11 @@ class NavDrawer extends \yii\base\Widget
                 continue;
             }
 
+            if (is_string($item)) {
+                $items[] = $item;
+                continue;
+            }
+
             $options = ArrayHelper::getValue($item, 'options', []);
             Html::addCssClass($options, $this->primaryColor);
             $item['options'] = $options;
@@ -115,10 +120,6 @@ class NavDrawer extends \yii\base\Widget
 
     public function renderItem($item)
     {
-        if (is_string($item)) {
-            return $item;
-        }
-
         $listItem = [
             'support' => ArrayHelper::getValue($item, 'support', null),
             'label' => ArrayHelper::getValue($item, 'label', false),
