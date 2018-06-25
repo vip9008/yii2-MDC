@@ -10,8 +10,8 @@ use vip9008\MDC\assets\NavDrawerAsset;
 /**
  * A widget to render a nav drawer component
  * @param array $options: nav container html options in terms of name-value pairs.
- * @param string $drawerType: nav drawer type. will be added as a css class. defaults to permanent
- * supported drawer types are ['modal', 'persistent', 'permanent']
+ * @param string | array $drawerType: nav drawer type. will be added as a css class. defaults to permanent
+ * supported drawer types are ['modal', 'persistent', 'permanent', 'clipped']
  *
  * @param string $primaryColor: component primary color.
  * @param string $accentColor: component accent color (unused).
@@ -82,7 +82,7 @@ use vip9008\MDC\assets\NavDrawerAsset;
 class NavDrawer extends \yii\base\Widget
 {
     public $options = [];
-    public $drawerType = 'permanent';
+    public $drawerType = ['permanent'];
     public $primaryColor = 'deep-purple-A700';
     public $accentColor = '';
 
