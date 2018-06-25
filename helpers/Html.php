@@ -41,9 +41,20 @@ class Html extends BaseHtml
      *   ```php
      *   [
      *       'string' => 'info',
-     *       'options' => ['class' => 'material-icon'],
+     *       'options' => ['class' => 'icon'],
      *   ];
      *   ```
+     *
+     * @param array $primaryAction: primary action html options in terms of name-value pairs. you can specify the container tag. example,
+     *
+     *   ```php
+     *   [
+     *       'url' => ['controller/action'],
+     *       'tag' => 'a',
+     *   ];
+     *   ```
+     *
+     * defaults to button if not specified. recommended tags are ['a', 'button'].
      *
      * @param array $options: the component container html options in terms of name-value pairs. you can specify the container tag. example,
      *
@@ -59,7 +70,7 @@ class Html extends BaseHtml
      *
      * @see https://almoamen.net/MDC/components/lists.php
      */
-    public static function listItem($text, $support = null, $meta = null, $options = []) {
+    public static function listItem($text, $support = null, $meta = null, $primaryAction = null, $options = []) {
         $encodeText = ArrayHelper::remove($options, 'encodeText', true);
 
         if (is_array($text)) {
@@ -114,7 +125,9 @@ class Html extends BaseHtml
         if (is_array($support)) {
             if (!empty($support)) {
                 $_options = ArrayHelper::getValue($support, 'options', []);
-                static::addCssClass($_options, 'icon');
+                if (empty(ArrayHelper::getValue($_options, 'class'))) {
+                    static::addCssClass($_options, 'icon');
+                }
                 $support = static::tag('div', ArrayHelper::getValue($support, 'string', ''), $_options);
             } else {
                 $support = static::tag('div', '', ['class' => 'icon']);
@@ -143,6 +156,19 @@ class Html extends BaseHtml
             }
         }
 
+        if ($primaryAction === null) {
+                $primaryAction = '';
+        } else {
+            $tag = ArrayHelper::remove($primaryAction, 'tag', 'button');
+            Html::addCssClass($primaryAction, 'primary-action');
+            if ($tag == 'a') {
+                $url = ArrayHelper::remove($primaryAction, 'url', 'javascript: ;');
+                $primaryAction = static::a('', $url, $primaryAction);
+            } else {
+                $primaryAction = static::tag($tag, '', $primaryAction);
+            }
+        }
+
         $tag = ArrayHelper::remove($options, 'tag', 'div');
         static::addCssClass($options, 'mdc-list-item');
 
@@ -151,6 +177,6 @@ class Html extends BaseHtml
             return static::a($support . $text . $meta, $url, $options);
         }
 
-        return static::tag($tag, $support . $text . $meta, $options);
+        return static::tag($tag, $support . $text . $primaryAction . $meta, $options);
     }
 }

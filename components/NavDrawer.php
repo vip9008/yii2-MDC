@@ -231,12 +231,12 @@ class NavDrawer extends \yii\base\Widget
             }
 
             Html::addCssClass($options, 'interactive');
-            $listItem = Html::listItem($listItem['label'], $listItem['support'], $listItem['meta'], $options);
+            $listItem = Html::listItem($listItem['label'], $listItem['support'], $listItem['meta'], null, $options);
             return Html::tag('div', $listItem . $dropdownItems, $containerOptions);
         } else {
             $options['tag'] = 'a';
             $options['url'] = $url;
-            return Html::listItem($listItem['label'], $listItem['support'], $listItem['meta'], $options);
+            return Html::listItem($listItem['label'], $listItem['support'], $listItem['meta'], null, $options);
         }
     }
 
