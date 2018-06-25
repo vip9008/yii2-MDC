@@ -13,6 +13,14 @@ class Html extends BaseHtml
      *
      *   ```php
      *   [
+     *       'overline' => 'Overline',
+     *       'text' => 'Title',
+     *       'secondary' => 'Secondary',
+     *   ];
+     *   ```
+     *
+     *   ```php
+     *   [
      *       'overline' => ['string' => 'Overline', 'options' => ['class' => 'text-secondary']],
      *       'text' => ['string' => 'Title', 'options' => ['class' => 'text-primary']],
      *       'secondary' => ['string' => 'Secondary', 'options' => ['class' => 'text-secondary']],
