@@ -3,7 +3,7 @@
 namespace vip9008\MDC\components;
 
 use Yii;
-// use yii\helpers\ArrayHelper;
+use yii\helpers\ArrayHelper;
 use vip9008\MDC\helpers\Html;
 use vip9008\MDC\assets\DataTableAsset;
 use yii\grid\GridView as BaseGridView;
@@ -25,18 +25,24 @@ class DataTable extends BaseGridView
      * The "tag" element specifies the tag name of the container element and defaults to "div".
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
-    public $options = [];
+    public $options = ['class' => 'mdc-card'];
+    /**
+     * @var array the configuration for the pager widget. By default, [[LinkPager]] will be
+     * used to render the pager. You can use a different widget class by configuring the "class" element.
+     * Note that the widget must support the `pagination` property which will be populated with the
+     * [[\yii\data\BaseDataProvider::pagination|pagination]] value of the [[dataProvider]] and will overwrite this value.
+     */
+    public $pager = ['class' => 'vip9008\MDC\components\LinkPager'];
     /**
      * @var string the layout that determines how different sections of the grid view should be organized.
      * The following tokens will be replaced with the corresponding section contents:
      *
-     * - `{summary}`: the summary section. See [[renderSummary()]].
      * - `{errors}`: the filter model error summary. See [[renderErrors()]].
      * - `{items}`: the list items. See [[renderItems()]].
      * - `{sorter}`: the sorter. See [[renderSorter()]].
-     * - `{pager}`: the pager. See [[renderPager()]].
+     * - `{pager}`: the pager. See [[renderSummary()]] and [[renderPager()]].
      */
-    public $layout = "{summary}\n{items}\n{pager}";
+    public $layout = "{items}\n{pager}";
 
     /**
      * Initializes the grid view.
@@ -48,6 +54,83 @@ class DataTable extends BaseGridView
         DataTableAsset::register($this->getView());
 
         parent::init();
+    }
+
+    /**
+     * Renders a section of the specified name.
+     * If the named section is not supported, false will be returned.
+     * @param string $name the section name, e.g., `{summary}`, `{items}`.
+     * @return string|bool the rendering result of the section, or false if the named section is not supported.
+     */
+    public function renderSection($name)
+    {
+        switch ($name) {
+            case '{errors}':
+                return $this->renderErrors();
+            case '{pager}':
+                return Html::tag('div', $this->renderPager() . $this->renderSummary(), ['class' => 'footer']);
+            case '{items}':
+                return $this->renderItems();
+            case '{sorter}':
+                return $this->renderSorter();
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Renders the summary text.
+     */
+    public function renderSummary()
+    {
+        $count = $this->dataProvider->getCount();
+        if ($count <= 0) {
+            return '';
+        }
+        $summaryOptions = $this->summaryOptions;
+        $tag = ArrayHelper::remove($summaryOptions, 'tag', 'div');
+        if (($pagination = $this->dataProvider->getPagination()) !== false) {
+            $totalCount = $this->dataProvider->getTotalCount();
+            $begin = $pagination->getPage() * $pagination->pageSize + 1;
+            $end = $begin + $count - 1;
+            if ($begin > $end) {
+                $begin = $end;
+            }
+            $page = $pagination->getPage() + 1;
+            $pageCount = $pagination->pageCount;
+            if (($summaryContent = $this->summary) === null) {
+                return Html::tag($tag, Yii::t('yii', '{begin, number}-{end, number} of {totalCount, number}', [
+                        'begin' => $begin,
+                        'end' => $end,
+                        'count' => $count,
+                        'totalCount' => $totalCount,
+                        'page' => $page,
+                        'pageCount' => $pageCount,
+                    ]), $summaryOptions);
+            }
+        } else {
+            $begin = $page = $pageCount = 1;
+            $end = $totalCount = $count;
+            if (($summaryContent = $this->summary) === null) {
+                return Html::tag($tag, Yii::t('yii', '{count, number} {count, plural, one{item} other{items}}.', [
+                    'begin' => $begin,
+                    'end' => $end,
+                    'count' => $count,
+                    'totalCount' => $totalCount,
+                    'page' => $page,
+                    'pageCount' => $pageCount,
+                ]), $summaryOptions);
+            }
+        }
+
+        return Yii::$app->getI18n()->format($summaryContent, [
+            'begin' => $begin,
+            'end' => $end,
+            'count' => $count,
+            'totalCount' => $totalCount,
+            'page' => $page,
+            'pageCount' => $pageCount,
+        ], Yii::$app->language);
     }
 
     /**
@@ -119,5 +202,29 @@ class DataTable extends BaseGridView
         }
 
         return "<tbody>\n" . implode("\n", $rows) . "\n</tbody>";
+    }
+
+    /**
+     * Renders a table row with the given data model and key.
+     * @param mixed $model the data model to be rendered
+     * @param mixed $key the key associated with the data model
+     * @param int $index the zero-based index of the data model among the model array returned by [[dataProvider]].
+     * @return string the rendering result
+     */
+    public function renderTableRow($model, $key, $index)
+    {
+        $cells = [];
+        /* @var $column Column */
+        foreach ($this->columns as $column) {
+            $cells[] = $column->renderDataCell($model, $key, $index);
+        }
+        if ($this->rowOptions instanceof Closure) {
+            $options = call_user_func($this->rowOptions, $model, $key, $index, $this);
+        } else {
+            $options = $this->rowOptions;
+        }
+        $options['data-key'] = is_array($key) ? json_encode($key) : (string) $key;
+
+        return Html::tag('tr', implode('', $cells), $options);
     }
 }
