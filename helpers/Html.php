@@ -229,21 +229,114 @@ class Html extends BaseHtml
         if (!empty($options['multiple'])) {
             return static::listBox($name, $selection, $items, $options);
         }
-        $_options = $options;
-        $_options['name'] = $name;
-        unset($options['unselect']);
-        $selectOptions = static::renderSelectOptions($selection, $items, $_options);
+        
+        ArrayHelper::remove($options, 'type');
+        ArrayHelper::remove($options, 'unselect');
 
-        var_dump($options);
-        $input = static::tag(
-            'div',
-            Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-            Html::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']).
-            Html::hiddenInput($name, $selection, $options),
-            ['class' => 'mdc-text-field menu-button']
-        );
+        return Html::hiddenInput($name, $selection, $options);
+    }
 
-        return $input;
-        return static::tag('select', "\n" . $selectOptions . "\n", $options);
+    /**
+     * Renders the option tags that can be used by [[dropDownList()]] and [[listBox()]].
+     * @param string|array|null $selection the selected value(s). String for single or array for multiple selection(s).
+     * @param array $items the option data items. The array keys are option values, and the array values
+     * are the corresponding option labels. The array can also be nested (i.e. some array values are arrays too).
+     * For each sub-array, an option group will be generated whose label is the key associated with the sub-array.
+     * If you have a list of data models, you may convert them into the format described above using
+     * [[\yii\helpers\ArrayHelper::map()]].
+     *
+     * Note, the values and labels will be automatically HTML-encoded by this method, and the blank spaces in
+     * the labels will also be HTML-encoded.
+     * @param array $tagOptions the $options parameter that is passed to the [[dropDownList()]] or [[listBox()]] call.
+     * This method will take out these elements, if any: "prompt", "options" and "groups". See more details
+     * in [[dropDownList()]] for the explanation of these elements.
+     *
+     * @return string the generated list options
+     */
+    public static function renderSelectOptions($selection, $items, &$tagOptions = [])
+    {
+        if (ArrayHelper::isTraversable($selection)) {
+            $selection = array_map('strval', (array)$selection);
+        }
+
+        $lines = [];
+        $encodeSpaces = ArrayHelper::remove($tagOptions, 'encodeSpaces', false);
+        $encode = ArrayHelper::remove($tagOptions, 'encode', true);
+        if (isset($tagOptions['prompt'])) {
+            $promptOptions = ['data-value' => ''];
+            ArrayHelper::remove($promptOptions, 'value');
+            if (is_string($tagOptions['prompt'])) {
+                $promptText = $tagOptions['prompt'];
+            } else {
+                $promptText = $tagOptions['prompt']['text'];
+                $promptOptions = array_merge($promptOptions, $tagOptions['prompt']['options']);
+            }
+            $promptText = $encode ? static::encode($promptText) : $promptText;
+            if ($encodeSpaces) {
+                $promptText = str_replace(' ', '&nbsp;', $promptText);
+            }
+            static::addCssClass($promptOptions, 'interactive');
+            $lines[] = static::listItem($promptText, null, null, null, $promptOptions);
+        }
+
+        $options = ArrayHelper::getValue($tagOptions, 'options', []);
+        $groups = ArrayHelper::getValue($tagOptions, 'groups', []);
+
+        unset($tagOptions['prompt'], $tagOptions['options'], $tagOptions['groups']);
+
+        $options['encodeSpaces'] = ArrayHelper::getValue($options, 'encodeSpaces', $encodeSpaces);
+        $options['encode'] = ArrayHelper::getValue($options, 'encode', $encode);
+
+        $count = 0;
+        foreach ($items as $key => $value) {
+            if (is_array($value)) {
+                $groupAttrs = ArrayHelper::getValue($groups, $key, []);
+                $groupLabel = ArrayHelper::remove($groupAttrs, 'label', $key);
+
+                $attrs = ['options' => $options, 'groups' => $groups, 'encodeSpaces' => $encodeSpaces, 'encode' => $encode];
+
+                $content = static::renderSelectOptions($selection, $value, $attrs);
+
+                if ($count > 0) {
+                    $lines[] = static::tag('div', '', ['class' => 'mdc-divider']);
+                }
+
+                static::addCssClass($groupAttrs, 'mdc-list-group');
+
+                if (!empty($groupLabel)) {
+                    $groupLabel = static::tag('div', $groupLabel, ['class' => 'mdc-list-subtitle']);
+                } else {
+                    $groupLabel = '';
+                }
+
+                $lines[] = static::tag('div', "\n" . $groupLabel . "\n" . $content . "\n", $groupAttrs);
+            } else {
+                $attrs = ArrayHelper::getValue($options, $key, []);
+                $attrs['data-value'] = (string) $key;
+                ArrayHelper::remove($attrs, 'value');
+
+                if (!array_key_exists('selected', $attrs)) {
+                    $attrs['selected'] = $selection !== null &&
+                        (!ArrayHelper::isTraversable($selection) && !strcmp($key, $selection)
+                        || ArrayHelper::isTraversable($selection) && ArrayHelper::isIn((string)$key, $selection));
+                }
+
+                if ($attrs['selected'] == true) {
+                    Html::addCssClass($attrs, 'selected');
+                }
+                ArrayHelper::remove($attrs, 'selected');
+
+                $text = $encode ? static::encode($value) : $value;
+                if ($encodeSpaces) {
+                    $text = str_replace(' ', '&nbsp;', $text);
+                }
+
+                static::addCssClass($attrs, 'interactive');
+                $lines[] = static::listItem($text, null, null, null, $attrs);
+            }
+            $count++;
+        }
+
+        return implode("\n", $lines);
     }
 }
