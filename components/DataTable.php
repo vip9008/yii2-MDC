@@ -27,6 +27,28 @@ class DataTable extends BaseGridView
      */
     public $options = ['class' => 'mdc-card'];
     /**
+     * @var array options for the header section of the data table, will not be rendered if empty. example,
+     *
+     *      ```php
+     *      [
+     *          'title' => 'Header Title',
+     *          'actions' => [...],
+     *      ];
+     *      ```
+     *
+     *      ```php
+     *      [
+     *          'title' => [
+     *              'content' => '...',
+     *              'options' => [...],
+     *          ],
+     *          'actions' => [...],
+     *          'options' => [...],
+     *      ];
+     *      ```
+     */
+    public $header = [];
+    /**
      * @var array the configuration for the pager widget. By default, [[LinkPager]] will be
      * used to render the pager. You can use a different widget class by configuring the "class" element.
      * Note that the widget must support the `pagination` property which will be populated with the
@@ -42,7 +64,7 @@ class DataTable extends BaseGridView
      * - `{sorter}`: the sorter. See [[renderSorter()]].
      * - `{pager}`: the pager. See [[renderSummary()]] and [[renderPager()]].
      */
-    public $layout = "{items}\n{pager}";
+    public $layout = "{header}\n{items}\n{pager}";
 
     /**
      * Initializes the grid view.
@@ -73,9 +95,46 @@ class DataTable extends BaseGridView
                 return $this->renderItems();
             case '{sorter}':
                 return $this->renderSorter();
+            case '{header}':
+                return $this->renderHeader();
             default:
                 return false;
         }
+    }
+
+    /**
+     * Renders the data table header.
+     */
+    public function renderHeader() {
+        if (empty($this->header)) {
+            return '';
+        }
+
+        $title = ArrayHelper::getValue($this->header, 'title', null);
+        if ($title !== null) {
+            if (is_array($title)) {
+                $tag = ArrayHelper::remove($title, 'tag', 'div');
+                $content = ArrayHelper::getValue($title, 'content', '');
+                $_options = ArrayHelper::getValue($title, 'options', ['class' => 'title']);
+                $title = Html::tag($tag, $content, $_options);
+            } else {
+                $title = Html::tag('div', $title, ['class' => 'title']);
+            }
+        }
+
+        $actions = ArrayHelper::getValue($this->header, 'actions', '');
+        if (!empty($actions)) {
+            $items = [];
+            foreach ($actions as $actionItem) {
+                $items[] = Html::tag('div', $actionItem, ['class' => 'action-item']);
+            }
+
+            $actions = Html::tag('div', implode("\n", $items), ['class' => 'actions']);
+        }
+
+        $options = ArrayHelper::getValue($this->header, 'options', []);
+        Html::addCssClass($options, 'header');
+        return Html::tag('div', $title . $actions, $options);
     }
 
     /**
