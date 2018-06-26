@@ -237,6 +237,46 @@ class Html extends BaseHtml
     }
 
     /**
+     * Renders a stand-alone drop-down list.
+     * @see [[dropDownList()]] for more information
+     *
+     * @return string the generated input
+     */
+    public static function dropDownListInput($name, $selection = null, $items = [], $options = [])
+    {
+        if (!empty($options['multiple'])) {
+            return static::listBox($name, $selection, $items, $options);
+        }
+        
+        ArrayHelper::remove($options, 'type');
+        ArrayHelper::remove($options, 'unselect');
+        ArrayHelper::remove($options, 'name');
+
+        $label = ArrayHelper::remove($options, 'label', $name);
+
+        $inputOptions = $options;
+        $inputOptions['class'] = 'input';
+
+        $_options = ['class' => ArrayHelper::getValue($options, 'class', [])];
+        Html::addCssClass($_options, ['menu-button', 'mdc-text-field']);
+
+        $input = Html::tag('div',
+                 Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
+                 Html::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']).
+                 Html::tag('label', $label, ['class' => 'label']).
+                 Html::hiddenInput($name, $selection, $inputOptions),
+                 $_options);
+
+        $options['name'] = $name;
+
+        $list = Html::tag('div',
+                Html::renderSelectOptions($selection, $items, $options),
+                ['class' => 'mdc-list-container']);
+
+        return Html::tag('div', "\n$input\n$list\n", ['class' => 'mdc-menu-container select-menu']);
+    }
+
+    /**
      * Renders the option tags that can be used by [[dropDownList()]] and [[listBox()]].
      * @param string|array|null $selection the selected value(s). String for single or array for multiple selection(s).
      * @param array $items the option data items. The array keys are option values, and the array values
