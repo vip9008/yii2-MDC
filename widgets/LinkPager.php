@@ -1,6 +1,6 @@
 <?php
 
-namespace vip9008\MDC\components;
+namespace vip9008\MDC\widgets;
 
 use Yii;
 use yii\helpers\ArrayHelper;

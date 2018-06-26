@@ -14,7 +14,7 @@ class DataTable extends BaseGridView
      * @var string the default data column class if the class name is not explicitly specified when configuring a data column.
      * Defaults to 'yii\grid\DataColumn'.
      */
-    public $dataColumnClass = 'vip9008\MDC\components\DataColumn';
+    public $dataColumnClass = 'vip9008\MDC\widgets\DataColumn';
     /**
      * @var array the HTML attributes for the grid table element.
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
@@ -54,7 +54,7 @@ class DataTable extends BaseGridView
      * Note that the widget must support the `pagination` property which will be populated with the
      * [[\yii\data\BaseDataProvider::pagination|pagination]] value of the [[dataProvider]] and will overwrite this value.
      */
-    public $pager = ['class' => 'vip9008\MDC\components\LinkPager'];
+    public $pager = ['class' => 'vip9008\MDC\widgets\LinkPager'];
     /**
      * @var string the layout that determines how different sections of the grid view should be organized.
      * The following tokens will be replaced with the corresponding section contents:

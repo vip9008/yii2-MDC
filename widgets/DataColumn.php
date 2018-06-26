@@ -1,6 +1,6 @@
 <?php
 
-namespace vip9008\MDC\components;
+namespace vip9008\MDC\widgets;
 
 use vip9008\MDC\helpers\Html;
 use yii\grid\DataColumn as BaseDataColumn;
