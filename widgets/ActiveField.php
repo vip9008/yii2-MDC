@@ -139,24 +139,8 @@ class ActiveField extends BaseActiveField
 
     public function dropDownList($items, $options = [])
     {
-        $this->template = "{label}\n{input}\n{hint}\n{error}";
-        $this->role['name'] = 'select';
-
-        Html::removeCssClass($this->options, $this->themeColor);
-
-        $selectControl = 'default-menu';
-        $listType = empty($items) ? '' : array_values($items)[0];
-        if (is_array($listType)) {
-            $selectControl = 'list-menu';
-            Html::addCssClass($this->options, $selectControl);
-            $this->role['type'] = $listType;
-        }
-
-        if (!isset($this->options['class'])) {
-            Html::addCssClass($this->options, "select-control $selectControl");
-        } else {
-            Html::addCssClass($this->options, 'select-control');
-        }
+        Html::addCssClass($this->options, 'mdc-menu-container select-menu');
+        Html::addCssClass($this->inputOptions, 'select-value');
         $options = array_merge($this->inputOptions, $options);
         $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
         
