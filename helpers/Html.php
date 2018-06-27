@@ -160,7 +160,7 @@ class Html extends BaseHtml
                 $primaryAction = '';
         } else {
             $tag = ArrayHelper::remove($primaryAction, 'tag', 'button');
-            Html::addCssClass($primaryAction, 'primary-action');
+            static::addCssClass($primaryAction, 'primary-action');
             if ($tag == 'a') {
                 $url = ArrayHelper::remove($primaryAction, 'url', 'javascript: ;');
                 $primaryAction = static::a('', $url, $primaryAction);
@@ -233,7 +233,7 @@ class Html extends BaseHtml
         ArrayHelper::remove($options, 'type');
         ArrayHelper::remove($options, 'unselect');
 
-        return Html::hiddenInput($name, $selection, $options);
+        return static::hiddenInput($name, $selection, $options);
     }
 
     /**
@@ -258,22 +258,25 @@ class Html extends BaseHtml
         $inputOptions['class'] = 'input';
 
         $_options = ['class' => ArrayHelper::getValue($options, 'class', [])];
-        Html::addCssClass($_options, ['menu-button', 'mdc-text-field']);
+        static::addCssClass($_options, ['menu-button', 'mdc-text-field']);
+        if ($selection !== null) {
+            static::addCssClass($_options, 'focus');
+        }
 
-        $input = Html::tag('div',
-                 Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                 Html::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']).
-                 Html::tag('label', $label, ['class' => 'label']).
-                 Html::hiddenInput($name, $selection, $inputOptions),
+        $input = static::tag('div',
+                 static::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
+                 static::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']).
+                 static::tag('label', $label, ['class' => 'label']).
+                 static::hiddenInput($name, $selection, $inputOptions),
                  $_options);
 
         $options['name'] = $name;
 
-        $list = Html::tag('div',
-                Html::renderSelectOptions($selection, $items, $options),
+        $list = static::tag('div',
+                static::renderSelectOptions($selection, $items, $options),
                 ['class' => 'mdc-list-container']);
 
-        return Html::tag('div', "\n$input\n$list\n", ['class' => 'mdc-menu-container select-menu']);
+        return static::tag('div', "\n$input\n$list\n", ['class' => 'mdc-menu-container select-menu']);
     }
 
     /**
@@ -362,7 +365,7 @@ class Html extends BaseHtml
                 }
 
                 if ($attrs['selected'] == true) {
-                    Html::addCssClass($attrs, 'selected');
+                    static::addCssClass($attrs, 'selected');
                 }
                 ArrayHelper::remove($attrs, 'selected');
 
@@ -378,5 +381,56 @@ class Html extends BaseHtml
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * Generates an mdc-text-field input.
+     * @param string $name the name attribute.
+     * @param string $value the value attribute. If it is null, the value attribute will not be generated.
+     * @param array $options the tag options in terms of name-value pairs. These will be rendered as
+     * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
+     * If a value is null, the corresponding attribute will not be rendered.
+     * See [[renderTagAttributes()]] for details on how attributes are being rendered.
+     * @return string the generated mdc-text-field
+     */
+    public static function textFieldInput($name, $value = null, $options = [])
+    {
+        $types_list = [
+            'text',
+            'email',
+            'number',
+            'password',
+            'search',
+            'tel',
+            'url',
+        ];
+
+        $icon = ArrayHelper::remove($options, 'icon', null);
+        if ($icon !== null && is_array($icon)) {
+            $_options = ['class' => ArrayHelper::getValue($icon, 'options', [])];
+            static::addCssClass($_options, 'icon');
+            $icon = static::tag('div', ArrayHelper::getValue($icon, 'content', ''), $_options);
+        } else {
+            $icon = '';
+        }
+
+        $label = ArrayHelper::remove($options, 'label', $name);
+        $label = static::tag('label', $label, ['class' => 'label']);
+
+        $type = ArrayHelper::remove($options, 'type', 'text');
+        if (!in_array($type, $types_list)) {
+            $type = 'text';
+        }
+
+        $_options = ['class' => ArrayHelper::remove($options, 'class', [])];
+        static::addCssClass($_options, 'mdc-text-field');
+        if ($value !== null) {
+            static::addCssClass($_options, 'focus');
+        }
+
+        static::addCssClass($options, 'input');
+        $input = static::input($type, $name, $value, $options);
+
+        return static::tag('div', "\n$icon\n$input\n$label\n", $_options);
     }
 }
