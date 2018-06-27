@@ -140,7 +140,8 @@ class ActiveField extends BaseActiveField
     public function dropDownList($items, $options = [])
     {
         $selection = ArrayHelper::getValue($options, 'value', Html::getAttributeValue($this->model, $this->attribute));
-
+        
+        $options = array_merge($this->options, $options);
         $options = array_merge($this->inputOptions, $options);
         Html::addCssClass($options, ['menu-button', 'mdc-text-field', $this->themeColor]);
 
