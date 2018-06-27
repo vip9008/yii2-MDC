@@ -139,8 +139,14 @@ class ActiveField extends BaseActiveField
 
     public function dropDownList($items, $options = [])
     {
+        $selection = ArrayHelper::getValue($options, 'value', Html::getAttributeValue($this->model, $this->attribute));
+
         $options = array_merge($this->inputOptions, $options);
         Html::addCssClass($options, ['menu-button', 'mdc-text-field', $this->themeColor]);
+
+        if ($selection !== null) {
+            Html::addCssClass($options, 'focus');
+        }
 
         $this->template = Html::beginTag('div', $options) . "\n{value}\n{label}\n{input}" .
                           Html::endTag('div') . "\n{hint}\n{error}\n" .
@@ -148,8 +154,6 @@ class ActiveField extends BaseActiveField
 
         $this->options['class'] = 'mdc-menu-container select-menu';
         $options['class'] = 'select-value';
-
-        $selection = ArrayHelper::getValue($options, 'value', Html::getAttributeValue($this->model, $this->attribute));
 
         $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
                                   Html::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']);
