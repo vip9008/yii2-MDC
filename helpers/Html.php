@@ -255,7 +255,7 @@ class Html extends BaseHtml
         $label = ArrayHelper::remove($options, 'label', $name);
 
         $inputOptions = $options;
-        $inputOptions['class'] = 'input';
+        $inputOptions['class'] = 'select-value';
 
         $_options = ['class' => ArrayHelper::getValue($options, 'class', [])];
         static::addCssClass($_options, ['menu-button', 'mdc-text-field']);
@@ -319,6 +319,7 @@ class Html extends BaseHtml
                 $promptText = str_replace(' ', '&nbsp;', $promptText);
             }
             static::addCssClass($promptOptions, 'interactive');
+            $promptOptions['tabindex'] = '-1';
             $lines[] = static::listItem($promptText, null, null, null, $promptOptions);
         }
 
@@ -375,6 +376,7 @@ class Html extends BaseHtml
                 }
 
                 static::addCssClass($attrs, 'interactive');
+                $attrs['tabindex'] = '-1';
                 $lines[] = static::listItem($text, null, null, null, $attrs);
             }
             $count++;
