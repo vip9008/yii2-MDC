@@ -116,7 +116,7 @@ class NavDrawer extends \yii\base\Widget
 
     public function run()
     {
-        return Html::tag('nav', $this->renderHeader() . $this->renderItems(), $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim']);
+        return Html::tag('nav', $this->renderHeader() . $this->renderItems(), $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim', 'tabindex' => '-1']);
     }
 
     public function renderHeader()
