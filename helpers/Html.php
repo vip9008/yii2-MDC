@@ -276,7 +276,7 @@ class Html extends BaseHtml
                 static::renderSelectOptions($selection, $items, $options),
                 ['class' => 'mdc-list-container']);
 
-        return static::tag('div', "\n$input\n$list\n", ['class' => 'mdc-menu-container select-menu']);
+        return static::tag('div', "\n$input\n$list\n", ['class' => 'mdc-menu-container select-menu', 'tabindex' => '-1']);
     }
 
     /**
