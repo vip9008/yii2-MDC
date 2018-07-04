@@ -11,7 +11,6 @@ class ProgressIndicatorAsset extends AssetBundle
         "css/mdc.progress.indicator.css",
     ];
     public $js = [
-        "js/mdc.progress.indicator.js",
     ];
     public $depends = [
         'vip9008\MDC\assets\MaterialGrid',
