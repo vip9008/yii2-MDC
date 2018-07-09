@@ -69,12 +69,41 @@ class ActiveField extends BaseActiveField
         return $this;
     }
 
+    private function textInputIcon($options = false)
+    {
+        if ($options === false) {
+            return '';
+        } else {
+            if (is_array($options)) {
+                $tag = strtolower(ArrayHelper::remove($options, 'tag', 'div'));
+                Html::addCssClass($options, 'icon');
+
+                if (!in_array($tag, ['div', 'a', 'button'])) {
+                    $tag = 'div';
+                }
+
+                $label = ArrayHelper::remove($options, 'label', '');
+
+                if ($tag == 'a') {
+                    $url = ArrayHelper::remove($options, 'href', ArrayHelper::remove($options, 'url', '#'));
+                    return  Html::a($label, $url, $options);
+                } else {
+                    return Html::tag($tag, $label, $options);
+                }
+            } else {
+                return Html::tag('div', $options, ['class' => 'icon']);
+            }
+        }
+    }
+
     public function textInput($options = [])
     {
         Html::addCssClass($this->options, 'mdc-text-field');
         Html::addCssClass($this->inputOptions, 'input');
+
+        $icon = $this->textInputIcon(ArrayHelper::remove($options, 'icon', false));
         $options = array_merge($this->inputOptions, $options);
-        $this->parts['{input}'] = Html::activeTextInput($this->model, $this->attribute, $options);
+        $this->parts['{input}'] = $icon . Html::activeTextInput($this->model, $this->attribute, $options);
 
         return $this;
     }
@@ -101,6 +130,8 @@ class ActiveField extends BaseActiveField
     {
         Html::addCssClass($this->options, 'mdc-text-field');
         Html::addCssClass($this->inputOptions, 'input');
+
+        $icon = $this->textInputIcon(ArrayHelper::remove($options, 'icon', false));
         $options = array_merge($this->inputOptions, $options);
         $this->parts['{input}'] = Html::activePasswordInput($this->model, $this->attribute, $options);
 
