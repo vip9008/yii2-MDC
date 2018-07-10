@@ -35,7 +35,7 @@ class ActiveField extends BaseActiveField
         $options = $this->options;
 
         Html::addCssClass($options, "field-$inputID");
-        Html::addCssClass($options, $this->themeColor);
+        // Html::addCssClass($options, $this->themeColor);
 
         if ($this->model->isAttributeRequired($attribute)) {
             $class[] = $this->form->requiredCssClass;
@@ -98,7 +98,7 @@ class ActiveField extends BaseActiveField
 
     public function textInput($options = [])
     {
-        Html::addCssClass($this->options, 'mdc-text-field');
+        Html::addCssClass($this->options, ['mdc-text-field', $this->themeColor]);
         Html::addCssClass($this->inputOptions, 'input');
 
         $icon = $this->textInputIcon(ArrayHelper::remove($options, 'icon', false));
@@ -110,7 +110,7 @@ class ActiveField extends BaseActiveField
     
     public function textarea($options = [])
     {
-        Html::addCssClass($this->options, 'mdc-text-field');
+        Html::addCssClass($this->options, ['mdc-text-field', $this->themeColor]);
         Html::addCssClass($this->inputOptions, 'input');
         $options = array_merge($this->inputOptions, $options);
         $this->parts['{input}'] = Html::activeTextarea($this->model, $this->attribute, $options);
@@ -128,7 +128,7 @@ class ActiveField extends BaseActiveField
 
     public function passwordInput($options = [])
     {
-        Html::addCssClass($this->options, 'mdc-text-field');
+        Html::addCssClass($this->options, ['mdc-text-field', $this->themeColor]);
         Html::addCssClass($this->inputOptions, 'input');
 
         $icon = $this->textInputIcon(ArrayHelper::remove($options, 'icon', false));
@@ -160,9 +160,13 @@ class ActiveField extends BaseActiveField
 
     public function checkbox($options = [], $enclosedByLabel = true)
     {
-        $this->template = "{input}";
-        Html::addCssClass($this->options, 'checkbox-input');
+        $this->template = "\n{input}\n". Html::tag('div', "\n{label}\n", ['class' => 'text']) . "\n";
+
+        Html::addCssClass($this->options, ['mdc-list-item']);
+
         $options = array_merge($this->inputOptions, $options);
+        Html::addCssClass($options, $this->themeColor);
+
         $this->parts['{input}'] = Html::activeCheckbox($this->model, $this->attribute, $options);
 
         return $this;

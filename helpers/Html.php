@@ -453,4 +453,47 @@ class Html extends BaseHtml
 
         return static::tag('div', "\n$icon\n$input\n$label\n", $_options);
     }
+
+    /**
+     * Generates a boolean input.
+     * @param string $type the input type. This can be either `radio` or `checkbox`.
+     * @param string $name the name attribute.
+     * @param bool $checked whether the checkbox should be checked.
+     * @param array $options the tag options in terms of name-value pairs. The following options are specially handled:
+     *
+     * - uncheck: string, the value associated with the uncheck state of the checkbox. When this attribute
+     *   is present, a hidden input will be generated so that if the checkbox is not checked and is submitted,
+     *   the value of this attribute will still be submitted to the server via the hidden input.
+     * - label: string, a label displayed next to the checkbox.  It will NOT be HTML-encoded. Therefore you can pass
+     *   in HTML code such as an image tag. If this is is coming from end users, you should [[encode()]] it to prevent XSS attacks.
+     *   When this option is specified, the checkbox will be enclosed by a label tag.
+     * - labelOptions: array, the HTML attributes for the label tag. Do not set this option unless you set the "label" option.
+     *
+     * The rest of the options will be rendered as the attributes of the resulting checkbox tag. The values will
+     * be HTML-encoded using [[encode()]]. If a value is null, the corresponding attribute will not be rendered.
+     * See [[renderTagAttributes()]] for details on how attributes are being rendered.
+     *
+     * @return string the generated checkbox tag
+     * @since 2.0.9
+     */
+    protected static function booleanInput($type, $name, $checked = false, $options = [])
+    {
+        $checked = (int) $checked;
+
+        unset($options['uncheck']);
+        unset($options['label'], $options['labelOptions']);
+
+        if ($type == 'checkbox') {
+            $containerOptions = [
+                'class' => ArrayHelper::remove($options, 'class', ''),
+                'tabindex' => ArrayHelper::remove($options, 'tabindex', '-1'),
+            ];
+
+            static::addCssClass($containerOptions, 'mdc-checkbox');
+
+            return static::tag('div', static::hiddenInput($name, $checked, $options), $containerOptions);
+        }
+
+        return static::input($type, $name, $checked, $options);
+    }
 }
