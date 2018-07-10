@@ -180,15 +180,31 @@ class ActiveField extends BaseActiveField
             Html::addCssClass($options, 'focus');
         }
 
+        $dropDownListType = 'standard';
+        if (Html::findCssClass($options, 'mdc-searchable')) {
+            $dropDownListType = 'searchable';
+            $error_message = ArrayHelper::remove($options, 'errorMessage', "Can't find any match!");
+        }
+
         $this->template = Html::beginTag('div', $options) . "\n{value}\n{label}\n{input}" .
                           Html::endTag('div') . "\n{hint}\n{error}\n" .
                           Html::tag('div', "\n{list}\n", ['class' => 'mdc-list-container']);
 
         $this->options['class'] = 'mdc-menu-container select-menu';
-        $options['class'] = 'select-value';
 
-        $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                                  Html::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']);
+        if (Html::findCssClass($options, 'full-width')) {
+            Html::addCssClass($this->options, 'full-width');
+        }
+
+        if ($dropDownListType == 'searchable') {
+            $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
+                                      Html::tag('input', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input', 'type' => 'text']);
+        } else {
+            $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
+                                      Html::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']);
+        }
+
+        $options['class'] = 'select-value';
 
         $this->parts['{input}'] = Html::activeDropDownList($this->model, $this->attribute, $items, $options);
 
@@ -197,6 +213,10 @@ class ActiveField extends BaseActiveField
         ArrayHelper::remove($options, 'unselect');
 
         $this->parts['{list}'] = Html::renderSelectOptions($selection, $items, $options);
+
+        if ($dropDownListType == 'searchable') {
+            $this->parts['{list}'] .= "\n<div class=\"mdc-list-item mdc-error-message\"><div class=\"text text-hint\">$error_message</div></div>";
+        }
         
         return $this;
     }

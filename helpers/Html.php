@@ -8,6 +8,23 @@ use yii\helpers\Html as BaseHtml;
 class Html extends BaseHtml
 {
     /**
+     * Find a css class in a set of html options.
+     * @param array $options: html options in terms of name-value pairs.
+     * @param string $class: the css class to be find in $options.
+     *
+     * @return bool
+     */
+    public static function findCssClass($options, $class)
+    {
+        $classes = ArrayHelper::getValue($options, 'class', []);
+        if (!is_array($classes)) {
+            $classes = explode(' ', $classes);
+        }
+
+        return in_array($class, $classes);
+    }
+
+    /**
      * Generates a List Item component (List Row).
      * @param string|array $text: the component primary text part. array example,
      *
@@ -70,7 +87,8 @@ class Html extends BaseHtml
      *
      * @see https://almoamen.net/MDC/components/lists.php
      */
-    public static function listItem($text, $support = null, $meta = null, $primaryAction = null, $options = []) {
+    public static function listItem($text, $support = null, $meta = null, $primaryAction = null, $options = [])
+    {
         $encodeText = ArrayHelper::remove($options, 'encodeText', true);
 
         if (is_array($text)) {
