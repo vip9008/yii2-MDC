@@ -160,7 +160,11 @@ class ActiveField extends BaseActiveField
 
     public function checkbox($options = [], $enclosedByLabel = true)
     {
-        $this->template = "\n{input}\n". Html::tag('div', "\n{label}\n", ['class' => 'text']) . "\n";
+        $this->template = "\n{input}\n";
+
+        if ($enclosedByLabel) {
+            $this->template = "\n{input}\n" . Html::tag('div', "\n{label}\n", ['class' => 'text']) . "\n";
+        }
 
         Html::addCssClass($this->options, ['mdc-list-item']);
 
@@ -168,6 +172,24 @@ class ActiveField extends BaseActiveField
         Html::addCssClass($options, $this->themeColor);
 
         $this->parts['{input}'] = Html::activeCheckbox($this->model, $this->attribute, $options);
+
+        return $this;
+    }
+
+    public function switch($options = [], $enclosedByLabel = true)
+    {
+        $this->template = "\n{input}\n";
+
+        if ($enclosedByLabel) {
+            $this->template = "\n" . Html::tag('div', "\n{label}\n", ['class' => 'text']) . "\n{input}\n";
+        }
+
+        Html::addCssClass($this->options, ['mdc-list-item']);
+
+        $options = array_merge($this->inputOptions, $options);
+        Html::addCssClass($options, $this->themeColor);
+
+        $this->parts['{input}'] = Html::activeSwitch($this->model, $this->attribute, $options);
 
         return $this;
     }

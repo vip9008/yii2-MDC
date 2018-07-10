@@ -455,6 +455,28 @@ class Html extends BaseHtml
     }
 
     /**
+     * Generates a switch input.
+     * @see [[checkbox()]] for details.
+     *
+     * @return string the generated switch tag
+     */
+    public static function switch($name, $checked = false, $options = [])
+    {
+        return static::booleanInput('switch', $name, $checked, $options);
+    }
+
+    /**
+     * Generates a switch tag.
+     * @see [[activeCheckbox()]] for details
+     *
+     * @return string the generated switch tag
+     */
+    public static function activeSwitch($model, $attribute, $options = [])
+    {
+        return static::activeBooleanInput('switch', $model, $attribute, $options);
+    }
+
+    /**
      * Generates a boolean input.
      * @param string $type the input type. This can be either `radio` or `checkbox`.
      * @param string $name the name attribute.
@@ -483,17 +505,36 @@ class Html extends BaseHtml
         unset($options['uncheck']);
         unset($options['label'], $options['labelOptions']);
 
-        if ($type == 'checkbox') {
-            $containerOptions = [
-                'class' => ArrayHelper::remove($options, 'class', ''),
-                'tabindex' => ArrayHelper::remove($options, 'tabindex', '-1'),
-            ];
+        switch ($type) {
+            case 'checkbox':
+                $containerOptions = [
+                    'class' => ArrayHelper::remove($options, 'class', ''),
+                    'tabindex' => ArrayHelper::remove($options, 'tabindex', '0'),
+                ];
 
-            static::addCssClass($containerOptions, 'mdc-checkbox');
+                static::addCssClass($containerOptions, 'mdc-checkbox');
 
-            return static::tag('div', static::hiddenInput($name, $checked, $options), $containerOptions);
+                return static::tag('div', static::hiddenInput($name, $checked, $options), $containerOptions);
+            break;
+
+            case 'switch':
+                $containerOptions = [
+                    'class' => ArrayHelper::remove($options, 'class', ''),
+                    'tabindex' => ArrayHelper::remove($options, 'tabindex', '0'),
+                ];
+
+                static::addCssClass($containerOptions, 'mdc-switch');
+
+                return static::tag(
+                    'div',
+                    static::tag('div', '', ['class' => 'rail']).
+                    static::hiddenInput($name, $checked, $options),
+                    $containerOptions
+                );
+            break;
+
+            default:
+                return static::input($type, $name, $checked, $options);
         }
-
-        return static::input($type, $name, $checked, $options);
     }
 }
