@@ -222,12 +222,14 @@ class ActiveField extends BaseActiveField
             Html::addCssClass($this->options, 'full-width');
         }
 
+        $value = ArrayHelper::getValue($items, $selection, '');
+
         if ($dropDownListType == 'searchable') {
             $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                                      Html::tag('input', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input', 'type' => 'text']);
+                                      Html::tag('input', null, ['class' => 'input', 'type' => 'text', 'value' => $value]);
         } else {
             $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                                      Html::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']);
+                                      Html::tag('div', $value, ['class' => 'input']);
         }
 
         $options['class'] = 'select-value';
