@@ -336,7 +336,7 @@ class Html extends BaseHtml
             if ($encodeSpaces) {
                 $promptText = str_replace(' ', '&nbsp;', $promptText);
             }
-            static::addCssClass($promptOptions, 'interactive');
+            static::addCssClass($promptOptions, ['interactive', 'text-secondary']);
             $promptOptions['tabindex'] = '-1';
             $lines[] = static::listItem($promptText, null, null, null, $promptOptions);
         }
