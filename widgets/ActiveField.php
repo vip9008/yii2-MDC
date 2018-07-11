@@ -212,8 +212,7 @@ class ActiveField extends BaseActiveField
             $error_message = ArrayHelper::remove($options, 'errorMessage', "Can't find any match!");
         }
 
-        $this->template = Html::beginTag('div', $options) . "\n{value}\n{label}\n{input}" .
-                          Html::endTag('div') . "\n{hint}\n{error}\n" .
+        $this->template = Html::tag('div', "\n{value}\n{label}\n{input}\n{hint}\n{error}\n", $options) .
                           Html::tag('div', "\n{list}\n", ['class' => 'mdc-list-container']);
 
         $this->options['class'] = 'mdc-menu-container select-menu';
