@@ -257,7 +257,7 @@ class DataTable extends BaseGridView
         if (empty($rows) && $this->emptyText !== false) {
             $colspan = count($this->columns);
 
-            return "<tbody>\n<tr><td colspan=\"$colspan\">\n<div class=\"cell-data\">" . $this->renderEmpty() . "</div>\n</td></tr>\n</tbody>";
+            return "<tbody>\n<tr><td colspan=\"$colspan\" style=\"border: none;\">\n<div class=\"cell-data\">" . $this->renderEmpty() . "</div>\n</td></tr>\n</tbody>";
         }
 
         return "<tbody>\n" . implode("\n", $rows) . "\n</tbody>";
