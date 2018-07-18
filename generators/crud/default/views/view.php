@@ -20,7 +20,7 @@ use vip9008\MDC\widgets\DetailView;
 
 $this->title = $model-><?= $generator->getNameAttribute() ?>;
 $this->params['breadcrumbs'][] = ['label' => <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>, 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = <?= $generator->generateString('View: {ID}', ['ID' => $generator->getNameAttribute()]) ?>;
 
 $primaryColor = ArrayHelper::getValue(Yii::$app->params, 'primaryColor', 'indigo');
 $accentColor = ArrayHelper::getValue(Yii::$app->params, 'accentColor', 'blue');

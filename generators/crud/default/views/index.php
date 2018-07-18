@@ -22,7 +22,7 @@ use <?= $generator->indexWidgetType === 'grid' ? "vip9008\\MDC\\components\\Data
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>;
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>;
 
 $primaryColor = ArrayHelper::getValue(Yii::$app->params, 'primaryColor', 'indigo');
 $accentColor = ArrayHelper::getValue(Yii::$app->params, 'accentColor', 'blue');
