@@ -38,9 +38,8 @@ $accentColor = ArrayHelper::getValue(Yii::$app->params, 'accentColor', 'blue');
                 </div>
 
 <?php if($generator->enablePjax): ?>
-                <?= "<?php Pjax::begin(); ?>" ?>
+                <?= "<?php Pjax::begin(); ?>\n" ?>
 <?php endif; ?>
-
 <?php if(!empty($generator->searchModelClass)): ?>
                 <?= "<?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php endif; ?>
@@ -89,9 +88,8 @@ endif; ?>
                     },
                 ]) ?>
 <?php endif; ?>
-
 <?php if($generator->enablePjax): ?>
-                <?= "<?php Pjax::end(); ?>" ?>
+                <?= "<?php Pjax::end(); ?>\n" ?>
 <?php endif; ?>
 
             </section>
