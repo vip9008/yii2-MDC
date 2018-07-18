@@ -17,7 +17,7 @@ echo "<?php\n";
 $this->title = <?= $generator->generateString('Update ' . Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>;
 $this->params['breadcrumbs'][] = ['label' => <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>, 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => <?= $generator->generateString('View') ?>, 'url' => ['view', <?= $urlParams ?>]];
-$this->params['breadcrumbs'][] = <?= $generator->generateString('Update: {ID}', ['ID' => $generator->getNameAttribute()]) ?>;
+$this->params['breadcrumbs'][] = <?= $generator->generateString('Update: {ID}', ['ID' => '$model->id']) ?>;
 ?>
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-update">
