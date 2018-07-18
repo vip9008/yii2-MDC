@@ -42,11 +42,11 @@ $count = 0;
 foreach ($generator->getColumnNames() as $attribute):
 if (++$count < 6): ?>
             <div class="col">
-                <?= "<?= " . $generator->generateActiveSearchField($attribute) . " ?>" ?>
+                <?= "<?= " . $generator->generateActiveSearchField($attribute) . " ?>\n" ?>
             </div>
 <?php else: ?>
             <div class="col">
-                <?= "<?= '' // " . $generator->generateActiveSearchField($attribute) . " ?>" ?>
+                <?= "<?= '' // " . $generator->generateActiveSearchField($attribute) . " ?>\n" ?>
             </div>
 <?php
 endif;

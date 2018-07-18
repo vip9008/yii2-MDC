@@ -32,11 +32,14 @@ $accentColor = ArrayHelper::getValue(Yii::$app->params, 'accentColor', 'blue');
     <div class="row">
         <div class="col large-12">
             <section class="chapter <?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-index">
+
                 <div class="mdc-button-group">
                     <?= "<?= " ?>Html::a(<?= $generator->generateString('Create ' . Inflector::camel2words(StringHelper::basename($generator->modelClass))) ?>, ['create'], ['class' => "mdc-button btn-contained bg-$accentColor"]) ?>
                 </div>
 
-                <?= $generator->enablePjax ? "<?php Pjax::begin(); ?>\n" : '' ?>
+<?php if($generator->enablePjax): ?>
+                <?= "<?php Pjax::begin(); ?>" ?>
+<?php endif; ?>
 
 <?php if(!empty($generator->searchModelClass)): ?>
                 <?= "<?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -50,6 +53,7 @@ $accentColor = ArrayHelper::getValue(Yii::$app->params, 'accentColor', 'blue');
 <?php endif; ?>
                     'columns' => [
                         // ['class' => 'vip9008\MDC\widgets\SerialColumn'],
+
 <?php
 $count = 0;
 if (($tableSchema = $generator->getTableSchema()) === false):
@@ -72,6 +76,7 @@ if (++$count < 6): ?>
 endif;
 endforeach;
 endif; ?>
+
                         ['class' => 'vip9008\MDC\widgets\ActionColumn'],
                     ],
                 ]); ?>
@@ -85,7 +90,10 @@ endif; ?>
                 ]) ?>
 <?php endif; ?>
 
-                <?= $generator->enablePjax ? "<?php Pjax::end(); ?>\n" : '' ?>
+<?php if($generator->enablePjax): ?>
+                <?= "<?php Pjax::end(); ?>" ?>
+<?php endif; ?>
+
             </section>
         </div>
     </div>

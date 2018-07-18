@@ -55,7 +55,7 @@ $accentColor = ArrayHelper::getValue(Yii::$app->params, 'accentColor', 'blue');
 foreach ($generator->getColumnNames() as $attribute):
 if (in_array($attribute, $safeAttributes)): ?>
                             <div class="col">
-                                <?= "<?= " . $generator->generateActiveField($attribute) . " ?>" ?>
+                                <?= "<?= " . $generator->generateActiveField($attribute) . " ?>\n" ?>
                             </div>
 <?php
 endif;
