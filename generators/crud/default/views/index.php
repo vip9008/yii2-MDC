@@ -43,7 +43,7 @@ $accentColor = ArrayHelper::getValue(Yii::$app->params, 'accentColor', 'blue');
 <?php endif; ?>
 
 <?php if ($generator->indexWidgetType === 'grid'): ?>
-                <?= "<?= " ?>GridView::widget([
+                <?= "<?= " ?>DataTable::widget([
                     'dataProvider' => $dataProvider,
 <?php if (!empty($generator->searchModelClass)): ?>
                     // 'filterModel' => $searchModel,
@@ -65,9 +65,9 @@ else:
 foreach ($tableSchema->columns as $column):
 $format = $generator->generateColumnFormat($column);
 if (++$count < 6): ?>
-                        '<?= . $column->name . ($format === 'text' ? "" : ":" . $format) . ?>',
+                        '<?= $column->name . ($format === 'text' ? "" : ":" . $format) ?>',
 <?php else: ?>
-                        // '<?= . $column->name . ($format === 'text' ? "" : ":" . $format) . ?>',
+                        // '<?= $column->name . ($format === 'text' ? "" : ":" . $format) ?>',
 <?php
 endif;
 endforeach;
