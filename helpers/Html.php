@@ -338,6 +338,7 @@ class Html extends BaseHtml
             }
             static::addCssClass($promptOptions, ['interactive', 'text-secondary']);
             $promptOptions['tabindex'] = '-1';
+            $promptOptions = ['data-label'] = '';
             $lines[] = static::listItem($promptText, null, null, null, $promptOptions);
         }
 
@@ -395,6 +396,7 @@ class Html extends BaseHtml
 
                 static::addCssClass($attrs, 'interactive');
                 $attrs['tabindex'] = '-1';
+                $attrs['data-label'] = $text;
                 $lines[] = static::listItem($text, null, null, null, $attrs);
             }
             $count++;
