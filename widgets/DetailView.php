@@ -13,7 +13,7 @@ class DetailView extends BaseDetailView
                             <div class="col medium-4 smallext-5 small-3">
                                 <div class="mdt-body" style="padding: 0 0.5rem 1rem;">{label}</div>
                             </div>
-                            <div class="col xsmall-auto">
+                            <div class="col xsmall-fill-space">
                                 <div class="mdt-body text-secondary" style="padding: 0 0.5rem 1rem;">{value}</div>
                             </div>
                         </div>
