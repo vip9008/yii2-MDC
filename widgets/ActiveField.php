@@ -133,7 +133,7 @@ class ActiveField extends BaseActiveField
 
         $icon = $this->textInputIcon(ArrayHelper::remove($options, 'icon', false));
         $options = array_merge($this->inputOptions, $options);
-        $this->parts['{input}'] = Html::activePasswordInput($this->model, $this->attribute, $options);
+        $this->parts['{input}'] = $icon . Html::activePasswordInput($this->model, $this->attribute, $options);
 
         return $this;
     }
