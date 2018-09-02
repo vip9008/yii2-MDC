@@ -144,7 +144,10 @@ class NavDrawer extends \yii\base\Widget
                 }
             }
 
-            return Html::tag('div', implode("\n", $content), ['class' => 'header']);
+            $options = ArrayHelper::getValue($this->header, 'options', []);
+            Html::addCssClass($options, 'header');
+
+            return Html::tag('div', implode("\n", $content), ['class' => $options]);
         } else {
             return '';
         }
