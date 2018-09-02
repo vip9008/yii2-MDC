@@ -123,29 +123,21 @@ class NavDrawer extends \yii\base\Widget
     {
         if (!empty($this->header)) {
             $content = [];
-            $title = ArrayHelper::getValue($this->header, 'title', false);
-            $subtext = ArrayHelper::getValue($this->header, 'subtext', false);
-            if ($title) {
-                if (is_array($title)) {
-                    $options = ArrayHelper::getValue($title, 'options', []);
-                    Html::addCssClass($options, 'title');
-                    $content[] = Html::tag('div', ArrayHelper::getValue($title, 'label', ''), $options);
-                } else {
-                    $content[] = Html::tag('div', $title, ['class' => 'title']);
-                }
-            }
-            if ($subtext) {
-                if (is_array($subtext)) {
-                    $options = ArrayHelper::getValue($subtext, 'options', []);
-                    Html::addCssClass($options, 'subtext');
-                    $content[] = Html::tag('div', ArrayHelper::getValue($subtext, 'label', ''), $options);
-                } else {
-                    $content[] = Html::tag('div', $subtext, ['class' => 'subtext']);
-                }
-            }
-
-            $options = ArrayHelper::getValue($this->header, 'options', []);
+            $options = ArrayHelper::remove($this->header, 'options', []);
             Html::addCssClass($options, 'header');
+
+            foreach ($this->header as $item) {
+                if (is_array($item)) {
+                    $_tag = ArrayHelper::getValue($item, 'tag', 'div');
+                    $_label = ArrayHelper::getValue($item, 'label', '');
+                    $_options = ArrayHelper::getValue($item, 'options', []);
+
+                    $content[] = Html::tag($_tag, $_label, $_options);
+                } else {
+                    // if item is not an array
+                    $content[] = $item;
+                }
+            }
 
             return Html::tag('div', implode("\n", $content), ['class' => $options]);
         } else {
