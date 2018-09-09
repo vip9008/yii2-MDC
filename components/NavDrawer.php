@@ -212,8 +212,8 @@ class NavDrawer extends \yii\base\Widget
             if (empty($listItem['meta'])) {
                 $listItem['meta'] = [
                     'string' => Html::tag('div', 'keyboard_arrow_down', ['class' => 'material-icon']),
-                    [
-                        'class' => 'meta icon',
+                    'options' => [
+                        'class' => 'icon',
                     ]
                 ];
             }
