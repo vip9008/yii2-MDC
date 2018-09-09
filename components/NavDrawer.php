@@ -208,12 +208,12 @@ class NavDrawer extends \yii\base\Widget
             Html::addCssClass($options, 'active bold');
         }
 
-        if ($dropdownItems) {
+        if ($dropdownItems !== false) {
             if (empty($listItem['meta'])) {
                 $listItem['meta'] = [
                     'string' => Html::tag('div', 'keyboard_arrow_down', ['class' => 'material-icon']),
                     [
-                        'class' => 'meta icon'
+                        'class' => 'meta icon',
                     ]
                 ];
             }
