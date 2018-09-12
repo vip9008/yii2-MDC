@@ -544,14 +544,12 @@ class Html extends BaseHtml
 
     protected static function arrayValueSearch($array, $index)
     {
-        foreach (new RecursiveIteratorIterator(new RecursiveArrayIterator($array)) as $key => $value) {
-            if (is_array($value)) {
-                continue;
-            }
-            
-            if ($key === $index) {
+        foreach (new \RecursiveIteratorIterator(new \RecursiveArrayIterator($array)) as $key => $value) {
+            if ($key == $index) {
                 return $value;
             }
         }
+
+        return null;
     }
 }
