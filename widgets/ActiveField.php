@@ -221,7 +221,7 @@ class ActiveField extends BaseActiveField
             Html::addCssClass($this->options, 'full-width');
         }
 
-        $value = ArrayHelper::getValue($items, $selection, '');
+        $value = Html::arrayValueSearch($items, $selection, '');
 
         if ($dropDownListType == 'searchable') {
             $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).

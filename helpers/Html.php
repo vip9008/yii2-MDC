@@ -542,7 +542,7 @@ class Html extends BaseHtml
         }
     }
 
-    protected static function arrayValueSearch($array, $index)
+    public static function arrayValueSearch($array, $index, $return = null)
     {
         foreach (new \RecursiveIteratorIterator(new \RecursiveArrayIterator($array)) as $key => $value) {
             if ($key == $index) {
@@ -550,6 +550,6 @@ class Html extends BaseHtml
             }
         }
 
-        return null;
+        return $return;
     }
 }
