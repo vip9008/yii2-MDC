@@ -281,9 +281,11 @@ class Html extends BaseHtml
             static::addCssClass($_options, 'focus');
         }
 
+        $selectionValue = static::arrayValueSearch($items, $selection);
+
         $input = static::tag('div',
                  static::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                 static::tag('div', ArrayHelper::getValue($items, $selection, ''), ['class' => 'input']).
+                 static::tag('div', $selectionValue, ['class' => 'input']).
                  static::tag('label', $label, ['class' => 'label']).
                  static::hiddenInput($name, $selection, $inputOptions),
                  $_options);
@@ -537,6 +539,15 @@ class Html extends BaseHtml
 
             default:
                 return static::input($type, $name, $checked, $options);
+        }
+    }
+
+    protected static function arrayValueSearch($array, $index)
+    {
+        foreach (new RecursiveIteratorIterator(new RecursiveArrayIterator($array)) as $key => $value) {
+            if ($key === $index) {
+                return $value;
+            }
         }
     }
 }
