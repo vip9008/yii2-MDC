@@ -545,7 +545,7 @@ class Html extends BaseHtml
     public static function arrayValueSearch($array, $index, $return = null)
     {
         foreach (new \RecursiveIteratorIterator(new \RecursiveArrayIterator($array)) as $key => $value) {
-            if ($key == $index) {
+            if ((string) $key == (string) $index) {
                 return $value;
             }
         }
