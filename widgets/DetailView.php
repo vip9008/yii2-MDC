@@ -9,11 +9,11 @@ use yii\widgets\DetailView as BaseDetailView;
 
 class DetailView extends BaseDetailView
 {
-    public $template = '<div class="row" style="padding: 1rem 0.5rem 0;">
-                            <div class="col medium-4 smallext-5 small-3">
+    public $template = '<div style="padding: 1rem 0.5rem 0;" {options}>
+                            <div {captionOptions}>
                                 <div class="mdt-body" style="padding: 0 0.5rem 1rem;">{label}</div>
                             </div>
-                            <div class="col xsmall-fill-space">
+                            <div {contentOptions}>
                                 <div class="mdt-body text-secondary" style="padding: 0 0.5rem 1rem;">{value}</div>
                             </div>
                         </div>
@@ -50,5 +50,32 @@ class DetailView extends BaseDetailView
         echo Html::tag('div',
                 Html::tag($tag, implode("\n", $rows), $options) . $actions,
             ['class' => 'mdc-card', 'style' => 'max-width: 840px;']);
+    }
+
+    protected function renderAttribute($attribute, $index)
+    {
+        if (is_string($this->template)) {
+            $captionOptions = ArrayHelper::getValue($attribute, 'captionOptions', []);
+            Html::addCssClass($captionOptions, 'col medium-4 smallext-5 small-3');
+            $captionOptions = Html::renderTagAttributes($captionOptions);
+
+            $contentOptions = ArrayHelper::getValue($attribute, 'contentOptions', []);
+            Html::addCssClass($contentOptions, 'col xsmall-fill-space');
+            $contentOptions = Html::renderTagAttributes($contentOptions);
+
+            $options = ArrayHelper::getValue($attribute, 'options', []);
+            Html::addCssClass($options, 'row');
+            $options = Html::renderTagAttributes($options);
+
+            return strtr($this->template, [
+                '{label}' => $attribute['label'],
+                '{value}' => $this->formatter->format($attribute['value'], $attribute['format']),
+                '{captionOptions}' => $captionOptions,
+                '{contentOptions}' => $contentOptions,
+                '{options}' => $options,
+            ]);
+        }
+
+        return call_user_func($this->template, $attribute, $index, $this);
     }
 }
