@@ -11,13 +11,13 @@ class DetailView extends BaseDetailView
 {
     public $template = '<div style="padding: 1rem 0.5rem 0;" {options}>
                             <div {captionOptions}>
-                                <div class="mdt-body" style="padding: 0 0.5rem 1rem;">{label}</div>
+                                <div class="mdt-body" style="padding: 0 0.5rem 1.0625rem;">{label}</div>
                             </div>
                             <div {contentOptions}>
-                                <div class="mdt-body text-secondary" style="padding: 0 0.5rem 1rem;">{value}</div>
+                                <div class="mdt-body text-secondary" style="padding: 0 0.5rem 1.0625rem;">{value}</div>
                             </div>
                         </div>
-                        <div class="mdc-divider"></div>';
+                        <div class="mdc-divider" style="margin-top: -1px;"></div>';
     public $options = ['class' => 'mdc-card-primary'];
     public $actions = [];
 
