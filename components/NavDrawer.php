@@ -246,9 +246,18 @@ class NavDrawer extends \yii\base\Widget
             if ($route[0] !== '/' && Yii::$app->controller) {
                 $route = Yii::$app->controller->module->getUniqueId() . '/' . $route;
             }
-            $trimmed = substr($this->route, 0, strrpos($this->route, '/'));
-            if (ltrim($route, '/') !== $this->route && ltrim($route, '/') !== $trimmed) {
-                return false;
+            if (ltrim($route, '/') !== $this->route) {
+                if (ArrayHelper::getValue($item, 'isParent', false)) {
+                    // remove last part of route (action id)
+                    $trimmedRoute = ltrim(substr($route, 0, strrpos($route, '/')), '/');
+                    $trimmedCurrentRoute = substr($this->route, 0, strrpos($this->route, '/'));
+
+                    if (empty($trimmedRoute) || empty($trimmedCurrentRoute) || $trimmedRoute != $trimmedCurrentRoute) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
             unset($item['url']['#']);
             if (count($item['url']) > 1) {
