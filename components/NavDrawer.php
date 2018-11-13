@@ -256,7 +256,9 @@ class NavDrawer extends \yii\base\Widget
                         return false;
                     }
                 } else {
-                    return false;
+                    if (ltrim($route, '/') != $trimmedCurrentRoute) {
+                        return false;
+                    }
                 }
             }
             unset($item['url']['#']);
