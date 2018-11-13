@@ -171,6 +171,10 @@ class NavDrawer extends \yii\base\Widget
 
     public function renderItem($item)
     {
+        if (!is_array($item)) {
+            return $item;
+        }
+
         $listItem = [
             'support' => ArrayHelper::getValue($item, 'support', null),
             'label' => ArrayHelper::getValue($item, 'label', false),
@@ -196,7 +200,7 @@ class NavDrawer extends \yii\base\Widget
                     $active = true;
                 }
 
-                // endure there are no sub items
+                // ensure there are no sub items
                 ArrayHelper::remove($subItem, 'items');
                 $dropdownItems[] = $this->renderItem($subItem);
             }
