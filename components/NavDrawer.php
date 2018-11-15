@@ -85,6 +85,8 @@ class NavDrawer extends \yii\base\Widget
     public $drawerType = ['permanent'];
     public $primaryColor = 'deep-purple-A700';
     public $accentColor = '';
+    public $customScroller = false;
+    public $scrollerOptions = [];
 
     // header params
     public $header = [];
@@ -116,7 +118,13 @@ class NavDrawer extends \yii\base\Widget
 
     public function run()
     {
-        return Html::tag('nav', $this->renderHeader() . $this->renderItems(), $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim', 'tabindex' => '-1']);
+        $content = $this->renderHeader() . $this->renderItems();
+        if ($this->customScroller) {
+            Html::addCssClass($this->options, 'nano');
+            Html::addCssClass($this->scrollerOptions, 'nano-content');
+            $content = Html::tag('div', $content, $this->scrollerOptions);
+        }
+        return Html::tag('nav', $content, $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim', 'tabindex' => '-1']);
     }
 
     public function renderHeader()

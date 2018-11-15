@@ -14,10 +14,12 @@ class MaterialGrid extends AssetBundle
         // required css files
         "css/md.grid.css",
         "css/md.colors.css",
+        "css/mdc.nanoscroller.css",
         "css/mdc.divider.css",
     ];
     public $js = [
         // required js files
+        "js/jquery.nanoscroller.min.js",
         "js/md.grid.js",
     ];
     public $depends = [
