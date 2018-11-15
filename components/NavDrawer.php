@@ -125,10 +125,8 @@ class NavDrawer extends \yii\base\Widget
         $scrollerEnd = '';
         if ($this->customScroller) {
             Html::addCssClass($this->scrollerOptions, 'nano');
-
-            $scrollerBegin .= Html::beginTag('div', ['class' => 'nano-content'])."\n";
             $scrollerBegin .= Html::beginTag('div', $this->scrollerOptions)."\n";
-
+            $scrollerBegin .= Html::beginTag('div', ['class' => 'nano-content'])."\n";
             $scrollerEnd .= Html::endTag('div')."\n".Html::endTag('div')."\n";
         }
 
