@@ -85,11 +85,14 @@ class NavDrawer extends \yii\base\Widget
     public $drawerType = ['permanent'];
     public $primaryColor = 'deep-purple-A700';
     public $accentColor = '';
+
+    // nanoScroller
     public $customScroller = false;
     public $scrollerOptions = [];
 
     // header params
     public $header = [];
+    public $fixedHeader = false;
 
     // navigation items params
     public $navItems = [];
@@ -103,7 +106,7 @@ class NavDrawer extends \yii\base\Widget
     {
         parent::init();
 
-        NavDrawerAsset::register($this->getView());
+        NavDrawerAsset::register($this->view);
 
         $this->options['id'] = 'mdc-nav-drawer';
         Html::addCssClass($this->options, $this->drawerType);
@@ -118,12 +121,25 @@ class NavDrawer extends \yii\base\Widget
 
     public function run()
     {
-        $content = $this->renderHeader() . $this->renderItems();
+        $scrollerBegin = '';
+        $scrollerEnd = '';
         if ($this->customScroller) {
             Html::addCssClass($this->scrollerOptions, 'nano');
-            $content = Html::tag('div', $content, ['class' => 'nano-content']);
-            $content = Html::tag('div', $content, $this->scrollerOptions);
+
+            $scrollerBegin .= Html::beginTag('div', ['class' => 'nano-content'])."\n";
+            $scrollerBegin .= Html::beginTag('div', $this->scrollerOptions)."\n";
+
+            $scrollerEnd .= Html::endTag('div')."\n".Html::endTag('div')."\n";
         }
+
+        $content = $this->renderItems() . $scrollerEnd;
+        if ($this->fixedHeader) {
+            $content = $this->renderHeader() . $scrollerBegin . $content;
+            Html::addCssClass($this->options, 'fixed-header');
+        } else {
+            $content = $scrollerBegin . $this->renderHeader() . $content;
+        }
+
         return Html::tag('nav', $content, $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim', 'tabindex' => '-1']);
     }
 
