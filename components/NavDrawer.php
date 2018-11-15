@@ -120,8 +120,8 @@ class NavDrawer extends \yii\base\Widget
     {
         $content = $this->renderHeader() . $this->renderItems();
         if ($this->customScroller) {
-            Html::addCssClass($this->options, 'nano');
-            Html::addCssClass($this->scrollerOptions, 'nano-content');
+            Html::addCssClass($this->scrollerOptions, 'nano');
+            $content = Html::tag('div', $content, ['class' => 'nano-content']);
             $content = Html::tag('div', $content, $this->scrollerOptions);
         }
         return Html::tag('nav', $content, $this->options) . Html::tag('div', '', ['class' => 'mdc-drawer-scrim', 'tabindex' => '-1']);
