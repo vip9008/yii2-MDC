@@ -283,6 +283,15 @@ class Html extends BaseHtml
 
         $selectionValue = static::arrayValueSearch($items, $selection);
 
+        $doc = new \DOMDocument();
+        $doc->loadHTML($selectionValue);
+        $xpath = new \DOMXPath($doc);
+        foreach ($xpath->query('//div') as $node) {
+            $node->parentNode->removeChild($node);
+        }
+        
+        $selectionValue = trim(strip_tags($doc->saveHTML()));
+
         $input = static::tag('div',
                  static::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
                  static::tag('div', $selectionValue, ['class' => 'input']).
