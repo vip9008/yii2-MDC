@@ -398,7 +398,15 @@ class Html extends BaseHtml
 
                 static::addCssClass($attrs, 'interactive');
                 $attrs['tabindex'] = '-1';
-                $attrs['data-label'] = strip_tags($value);
+
+                $doc = new \DOMDocument();
+                $doc->loadHTML($value);
+                $xpath = new \DOMXPath($doc);
+                foreach ($xpath->query('//div') as $node) {
+                    $node->parentNode->removeChild($node);
+                }
+                $attrs['data-label'] = trim(strip_tags($doc->saveHTML()));
+                
                 $lines[] = static::listItem($text, null, null, null, $attrs);
             }
             $count++;
