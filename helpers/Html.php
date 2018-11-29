@@ -398,7 +398,7 @@ class Html extends BaseHtml
 
                 static::addCssClass($attrs, 'interactive');
                 $attrs['tabindex'] = '-1';
-                $attrs['data-label'] = $value;
+                $attrs['data-label'] = strip_tags($value);
                 $lines[] = static::listItem($text, null, null, null, $attrs);
             }
             $count++;
