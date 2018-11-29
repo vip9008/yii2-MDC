@@ -167,6 +167,7 @@ class ActiveField extends BaseActiveField
             $label = "\n{label}\n";
             if (!empty($description)) {
                 $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
+                Html::addCssClass($this->options, ['md-3line']);
             }
             $this->template = "\n{input}\n" . Html::tag('div', $label, ['class' => 'text']) . "\n";
         }
@@ -190,6 +191,7 @@ class ActiveField extends BaseActiveField
             $label = "\n{label}\n";
             if (!empty($description)) {
                 $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
+                Html::addCssClass($this->options, ['md-3line']);
             }
             $this->template = "\n" . Html::tag('div', $label, ['class' => 'text']) . "\n{input}\n";
         }
