@@ -223,14 +223,16 @@ class ActiveField extends BaseActiveField
 
         $value = Html::arrayValueSearch($items, $selection, '');
 
-        $doc = new \DOMDocument();
-        $doc->loadHTML($value);
-        $xpath = new \DOMXPath($doc);
-        foreach ($xpath->query('//div') as $node) {
-            $node->parentNode->removeChild($node);
-        }
+        if (!empty($value)) {
+            $doc = new \DOMDocument();
+            $doc->loadHTML($value);
+            $xpath = new \DOMXPath($doc);
+            foreach ($xpath->query('//div') as $node) {
+                $node->parentNode->removeChild($node);
+            }
 
-        $value = trim(strip_tags($doc->saveHTML()));
+            $value = trim(strip_tags($doc->saveHTML()));
+        }
 
         if ($dropDownListType == 'searchable') {
             $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
