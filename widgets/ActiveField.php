@@ -161,9 +161,14 @@ class ActiveField extends BaseActiveField
     public function checkbox($options = [], $enclosedByLabel = true)
     {
         $this->template = "\n{input}\n";
+        $description = ArrayHelper::remove($options, 'description', '');
 
         if ($enclosedByLabel) {
-            $this->template = "\n{input}\n" . Html::tag('div', "\n{label}\n", ['class' => 'text']) . "\n";
+            $label = "\n{label}\n";
+            if (!empty($description)) {
+                $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
+            }
+            $this->template = "\n{input}\n" . Html::tag('div', $label, ['class' => 'text']) . "\n";
         }
 
         Html::addCssClass($this->options, ['mdc-list-item']);
@@ -179,9 +184,14 @@ class ActiveField extends BaseActiveField
     public function switch($options = [], $enclosedByLabel = true)
     {
         $this->template = "\n{input}\n";
+        $description = ArrayHelper::remove($options, 'description', '');
 
         if ($enclosedByLabel) {
-            $this->template = "\n" . Html::tag('div', "\n{label}\n", ['class' => 'text']) . "\n{input}\n";
+            $label = "\n{label}\n";
+            if (!empty($description)) {
+                $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
+            }
+            $this->template = "\n" . Html::tag('div', $label, ['class' => 'text']) . "\n{input}\n";
         }
 
         Html::addCssClass($this->options, ['mdc-list-item']);
