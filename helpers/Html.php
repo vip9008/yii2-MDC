@@ -285,7 +285,7 @@ class Html extends BaseHtml
 
         if (!empty($selectionValue)) {
             $doc = new \DOMDocument();
-            $doc->loadHTML($selectionValue);
+            @$doc->loadHTML($selectionValue);
             $xpath = new \DOMXPath($doc);
             foreach ($xpath->query('//div') as $node) {
                 $node->parentNode->removeChild($node);
@@ -413,7 +413,7 @@ class Html extends BaseHtml
 
                 if (!empty($value)) {
                     $doc = new \DOMDocument();
-                    $doc->loadHTML($value);
+                    @$doc->loadHTML($value);
                     $xpath = new \DOMXPath($doc);
                     foreach ($xpath->query('//div') as $node) {
                         $node->parentNode->removeChild($node);
