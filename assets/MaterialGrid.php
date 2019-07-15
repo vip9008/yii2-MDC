@@ -19,7 +19,7 @@ class MaterialGrid extends AssetBundle
     ];
     public $js = [
         // required js files
-        "js/jquery.nanoscroller.min.js",
+        "js/jquery.nanoscroller.custom.js",
         "js/md.grid.js",
     ];
     public $depends = [
