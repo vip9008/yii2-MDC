@@ -110,10 +110,10 @@ class ActiveField extends BaseActiveField
     
     public function textarea($options = [])
     {
-        Html::addCssClass($this->options, ['mdc-text-field', $this->themeColor]);
-        Html::addCssClass($this->inputOptions, 'input');
+        Html::addCssClass($this->options, ['mdc-text-area', $this->themeColor]);
+        // Html::addCssClass($this->inputOptions, 'input');
         $options = array_merge($this->inputOptions, $options);
-        $this->parts['{input}'] = Html::activeTextarea($this->model, $this->attribute, $options);
+        $this->parts['{input}'] = Html::tag('div', Html::activeTextarea($this->model, $this->attribute, $options), ['class' => 'input']);
 
         return $this;
     }
