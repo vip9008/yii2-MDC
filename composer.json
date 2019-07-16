@@ -11,7 +11,8 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "*"
+        "yiisoft/yii2": "*",
+        "vip9008/mdc": "*"
     },
     "replace": {
         "vip9008/yii2-materialgrid": "dev-master"
