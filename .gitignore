@@ -1,14 +1,1 @@
 !.gitignore
-
-# web directory
-web/_includes
-web/color
-web/components
-web/css/style.css
-web/environment
-web/img
-web/js/script.js
-web/layout
-web/typography
-web/usability
-web/*.php
