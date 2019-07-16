@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class SideSheetAsset extends AssetBundle
 {
-    public $sourcePath = '@vip9008/md-assets';
+    public $sourcePath = '@vendor/vip9008/md-assets';
     public $css = [
         'css/mdc.sheets.side.css',
     ];

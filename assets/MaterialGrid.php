@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class MaterialGrid extends AssetBundle
 {
-    public $sourcePath = '@vip9008/md-assets';
+    public $sourcePath = '@vendor/vip9008/md-assets';
     public $css = [
         // required fonts
         "https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i",
