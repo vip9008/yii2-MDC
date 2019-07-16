@@ -21,5 +21,11 @@
         "psr-4": {
             "vip9008\\MDC\\": ""
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:vip9008/yii2-MDC.git"
+        }
+    ]
 }
