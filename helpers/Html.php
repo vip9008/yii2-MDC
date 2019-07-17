@@ -296,7 +296,7 @@ class Html extends BaseHtml
 
         $input = static::tag('div',
                  static::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                 static::tag('div', $selectionValue, ['class' => 'input']).
+                 static::tag('div', static::tag('div', $selectionValue), ['class' => 'input']).
                  static::tag('label', $label, ['class' => 'label']).
                  static::hiddenInput($name, $selection, $inputOptions),
                  $_options);
