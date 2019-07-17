@@ -27,6 +27,10 @@ use vip9008\MDC\assets\SnackbarAsset;
  */
 class Snackbar extends \yii\base\Widget
 {
+    /**
+     * @var array Snackbars container Html attributes in terms of name => value.
+     * Note: Snackbars container ID is set to #mdc-snackbars and cannot be changed.
+     */
     public $options = [];
 
     /**
@@ -42,19 +46,27 @@ class Snackbar extends \yii\base\Widget
         'info'    => 'snackbar-info',
         'warning' => 'snackbar-warning'
     ];
+
     /**
-     * @var array|null the options for rendering the action button tag. if set to null action button will not be rendered.
+     * @var float Time in seconds before removing an active snackbar.
+     * cannot be less than 4 or more than 10.
+     */
+    public $snackbarTime = 4.0;
+    /**
+     * @var array|null the action buttons Html attributs in terms of name => value.
+     * if set to null action button will not be rendered.
      * default tag is [[button]] can be changed to [[a]] tag, example: ['tag' => 'a']
+     * default label is [[Yii::t('yii', 'Dismiss')]] can be customized, example: ['label' => 'OK']
      */
     public $actionButton = null;
 
     public function init()
     {
         parent::init();
-
-        SnackbarAsset::register($this->getView());
-
         $this->options['id'] = 'mdc-snackbars';
+
+        SnackbarAsset::register($this->view);
+        $this->view->registerJs("mdc_activate_snackbars({$this->snackbarTime});");
     }
 
     public function run()
