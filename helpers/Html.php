@@ -87,9 +87,12 @@ class Html extends BaseHtml
      *
      * @see https://almoamen.net/MDC/components/lists.php
      */
-    public static function listItem($text, $support = null, $meta = null, $primaryAction = null, $options = [])
+    public static function listItem($text, $listOptions = [], $options = [])
     {
         $encodeText = ArrayHelper::remove($options, 'encodeText', true);
+        $support = ArrayHelper::getValue($listOptions, 'support', null);
+        $meta = ArrayHelper::getValue($listOptions, 'meta', null);
+        $primaryAction = ArrayHelper::getValue($listOptions, 'primaryAction', null);
 
         if (is_array($text)) {
             $overline = ArrayHelper::getValue($text, 'overline', []);
@@ -294,9 +297,14 @@ class Html extends BaseHtml
             $selectionValue = trim(strip_tags($doc->saveHTML()));
         }
 
+        $inputElement = static::tag('div', static::tag('div', $selectionValue), ['class' => 'input']);
+        if (self::findCssClass($_options, 'mdc-searchable')) {
+            $inputElement = static::tag('div', static::tag('input', $selectionValue, ['type' => 'text']), ['class' => 'input']);
+        }
+
         $input = static::tag('div',
                  static::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                 static::tag('div', static::tag('div', $selectionValue), ['class' => 'input']).
+                 $inputElement.
                  static::tag('label', $label, ['class' => 'label']).
                  static::hiddenInput($name, $selection, $inputOptions),
                  $_options);
@@ -352,7 +360,7 @@ class Html extends BaseHtml
             static::addCssClass($promptOptions, ['interactive', 'text-secondary']);
             $promptOptions['tabindex'] = '-1';
             $promptOptions['data-label'] = '';
-            $lines[] = static::listItem($promptText, null, null, null, $promptOptions);
+            $lines[] = static::listItem($promptText, [], $promptOptions);
         }
 
         $options = ArrayHelper::getValue($tagOptions, 'options', []);
@@ -421,7 +429,7 @@ class Html extends BaseHtml
                     $attrs['data-label'] = trim(strip_tags($doc->saveHTML()));
                 }
                 
-                $lines[] = static::listItem($text, null, null, null, $attrs);
+                $lines[] = static::listItem($text, [], $attrs);
             }
             $count++;
         }
