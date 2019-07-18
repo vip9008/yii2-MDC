@@ -482,10 +482,22 @@ class Html extends BaseHtml
             static::addCssClass($_options, 'focus');
         }
 
-        static::addCssClass($options, 'input');
-        $input = static::input($type, $name, $value, $options);
+        static::addCssClass($options, 'input-element');
+        $input = static::tag('div', static::input($type, $name, $value, $options), ['class' => 'input']);
 
         return static::tag('div', "\n$icon\n$input\n$label\n", $_options);
+    }
+
+    public static function activeTextInput($model, $attribute, $options = [])
+    {
+        static::addCssClass($options, 'input-element');
+        return parent::activeTextInput($model, $attribute, $options);
+    }
+
+    public static function activeTextarea($model, $attribute, $options = [])
+    {
+        static::addCssClass($options, 'input-element');
+        return parent::activeTextarea($model, $attribute, $options);
     }
 
     /**
