@@ -445,6 +445,10 @@ class Html extends BaseHtml
      * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
      * If a value is null, the corresponding attribute will not be rendered.
      * See [[renderTagAttributes()]] for details on how attributes are being rendered.
+     * The following attributes will have special treatment:
+     * string|array 'icon': Text field icon. [content => the icon itself, options => html options for the icon tag].
+     * string 'label': Label for the input. if not set $name will be used instead.
+     * string 'hint': Text to be rendered in the help block. if not set, help block will not render.
      * @return string the generated mdc-text-field
      */
     public static function textFieldInput($name, $value = null, $options = [])
@@ -460,16 +464,29 @@ class Html extends BaseHtml
         ];
 
         $icon = ArrayHelper::remove($options, 'icon', null);
-        if ($icon !== null && is_array($icon)) {
-            $_options = ['class' => ArrayHelper::getValue($icon, 'options', [])];
-            static::addCssClass($_options, 'icon');
-            $icon = static::tag('div', ArrayHelper::getValue($icon, 'content', ''), $_options);
+
+        if ($icon !== null) {
+            if (is_array($icon)) {
+                $_options = ArrayHelper::getValue($icon, 'options', []);
+                $icon = ArrayHelper::getValue($icon, 'content', '');
+            } else {
+                $_options = [];
+            }
+
+            static::addCssClass($_options, ['icon', 'material-icon']);
+            $tag = ArrayHelper::remove($_options, 'tag', 'div');
+            $icon = static::tag($tag, $icon, $_options);
         } else {
             $icon = '';
         }
 
-        $label = ArrayHelper::remove($options, 'label', $name);
+        $label = ArrayHelper::remove($options, 'label', ucfirst($name));
         $label = static::tag('label', $label, ['class' => 'label']);
+
+        $hint = ArrayHelper::remove($options, 'hint', '');
+        if (!empty($hint)) {
+            $hint = static::tag('div', $hint, ['class' => 'help-block']);
+        }
 
         $type = ArrayHelper::remove($options, 'type', 'text');
         if (!in_array($type, $types_list)) {
@@ -477,7 +494,8 @@ class Html extends BaseHtml
         }
 
         $_options = ['class' => ArrayHelper::remove($options, 'class', [])];
-        static::addCssClass($_options, 'mdc-text-field');
+        $color = ArrayHelper::remove($options, 'themeColor', 'indigo');
+        static::addCssClass($_options, ['mdc-text-field', $color]);
         if ($value !== null) {
             static::addCssClass($_options, 'focus');
         }
@@ -485,7 +503,30 @@ class Html extends BaseHtml
         static::addCssClass($options, 'input-element');
         $input = static::tag('div', static::input($type, $name, $value, $options), ['class' => 'input']);
 
-        return static::tag('div', "\n$icon\n$input\n$label\n", $_options);
+        return static::tag('div', "\n$icon\n$input\n$label\n$hint\n", $_options);
+    }
+
+    public static function textareaInput($name, $value = null, $options = [])
+    {
+        $label = ArrayHelper::remove($options, 'label', ucfirst($name));
+        $label = static::tag('label', $label, ['class' => 'label']);
+
+        $hint = ArrayHelper::remove($options, 'hint', '');
+        if (!empty($hint)) {
+            $hint = static::tag('div', $hint, ['class' => 'help-block']);
+        }
+
+        $_options = ['class' => ArrayHelper::remove($options, 'class', [])];
+        $color = ArrayHelper::remove($options, 'themeColor', 'indigo');
+        static::addCssClass($_options, ['mdc-text-area', $color]);
+        if ($value !== null) {
+            static::addCssClass($_options, 'focus');
+        }
+
+        static::addCssClass($options, 'input-element');
+        $input = static::tag('div', static::textarea($name, $value, $options), ['class' => 'input']);
+
+        return static::tag('div', "\n$input\n$label\n$hint\n", $_options);
     }
 
     /**
