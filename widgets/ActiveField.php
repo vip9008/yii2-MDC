@@ -35,7 +35,7 @@ class ActiveField extends BaseActiveField
         $options = $this->options;
 
         Html::addCssClass($options, "field-$inputID");
-        // Html::addCssClass($options, $this->themeColor);
+        $this->themeColor = ArrayHelper::remove($options, 'themeColor', $this->themeColor);
 
         if ($this->model->isAttributeRequired($attribute)) {
             $class[] = $this->form->requiredCssClass;
@@ -99,11 +99,11 @@ class ActiveField extends BaseActiveField
     public function textInput($options = [])
     {
         Html::addCssClass($this->options, ['mdc-text-field', $this->themeColor]);
-        Html::addCssClass($this->inputOptions, 'input');
+        Html::addCssClass($this->inputOptions, 'input-element');
 
         $icon = $this->textInputIcon(ArrayHelper::remove($options, 'icon', false));
         $options = array_merge($this->inputOptions, $options);
-        $this->parts['{input}'] = $icon . Html::activeTextInput($this->model, $this->attribute, $options);
+        $this->parts['{input}'] = $icon . Html::tag('div', Html::activeTextInput($this->model, $this->attribute, $options), ['class' => 'input']);
 
         return $this;
     }
@@ -111,7 +111,7 @@ class ActiveField extends BaseActiveField
     public function textarea($options = [])
     {
         Html::addCssClass($this->options, ['mdc-text-area', $this->themeColor]);
-        // Html::addCssClass($this->inputOptions, 'input');
+        Html::addCssClass($this->inputOptions, 'input-element');
         $options = array_merge($this->inputOptions, $options);
         $this->parts['{input}'] = Html::tag('div', Html::activeTextarea($this->model, $this->attribute, $options), ['class' => 'input']);
 

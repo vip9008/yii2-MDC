@@ -488,18 +488,6 @@ class Html extends BaseHtml
         return static::tag('div', "\n$icon\n$input\n$label\n", $_options);
     }
 
-    public static function activeTextInput($model, $attribute, $options = [])
-    {
-        static::addCssClass($options, 'input-element');
-        return parent::activeTextInput($model, $attribute, $options);
-    }
-
-    public static function activeTextarea($model, $attribute, $options = [])
-    {
-        static::addCssClass($options, 'input-element');
-        return parent::activeTextarea($model, $attribute, $options);
-    }
-
     /**
      * Generates a switch input.
      * @see [[checkbox()]] for details.

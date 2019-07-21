@@ -1,6 +1,7 @@
 <?php
 
 namespace vip9008\MDC\widgets;
+use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm as BaseActiveForm;
 
@@ -20,7 +21,8 @@ class ActiveForm extends BaseActiveForm
         SelectionControlAsset::register($this->getView());
         TextFieldAsset::register($this->getView());
         
-        $this->themeColor = ArrayHelper::remove($this->options, 'themeColor', $this->themeColor);
+        Html::addCssClass($this->options, 'mdc-form');
+        $this->themeColor = empty($this->themeColor) ? 'indigo' : $this->themeColor;
 
         parent::init();
     }
