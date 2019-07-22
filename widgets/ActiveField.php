@@ -129,11 +129,11 @@ class ActiveField extends BaseActiveField
     public function passwordInput($options = [])
     {
         Html::addCssClass($this->options, ['mdc-text-field', $this->themeColor]);
-        Html::addCssClass($this->inputOptions, 'input');
+        Html::addCssClass($this->inputOptions, 'input-element');
 
         $icon = $this->textInputIcon(ArrayHelper::remove($options, 'icon', false));
         $options = array_merge($this->inputOptions, $options);
-        $this->parts['{input}'] = $icon . Html::activePasswordInput($this->model, $this->attribute, $options);
+        $this->parts['{input}'] = $icon . Html::tag('div', Html::activePasswordInput($this->model, $this->attribute, $options), ['class' => 'input']);
 
         return $this;
     }
