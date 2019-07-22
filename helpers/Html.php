@@ -506,7 +506,7 @@ class Html extends BaseHtml
         return static::tag('div', "\n$icon\n$input\n$label\n$hint\n", $_options);
     }
 
-    public static function textareaInput($name, $value = null, $options = [])
+    public static function textAreaInput($name, $value = null, $options = [])
     {
         $label = ArrayHelper::remove($options, 'label', ucfirst($name));
         $label = static::tag('label', $label, ['class' => 'label']);
