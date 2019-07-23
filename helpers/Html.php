@@ -147,17 +147,17 @@ class Html extends BaseHtml
             if (!empty($support)) {
                 $_options = ArrayHelper::getValue($support, 'options', []);
                 if (empty(ArrayHelper::getValue($_options, 'class'))) {
-                    static::addCssClass($_options, 'icon');
+                    static::addCssClass($_options, 'icon material-icon');
                 }
                 $support = static::tag('div', ArrayHelper::getValue($support, 'string', ''), $_options);
             } else {
-                $support = static::tag('div', '', ['class' => 'icon']);
+                $support = static::tag('div', '', ['class' => 'icon material-icon']);
             }
         } else {
             if ($support === null) {
                 $support = '';
             } else {
-                $support = static::tag('div', $support, ['class' => 'icon']);
+                $support = static::tag('div', $support, ['class' => 'icon material-icon']);
             }
         }
 
