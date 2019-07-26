@@ -202,6 +202,15 @@ class Html extends BaseHtml
     }
 
     /**
+     * Renders and MDC divider.
+     */
+    public static function divider($options = [])
+    {
+        static::addCssClass($options, 'mdc-divider');
+        return static::tag('div', '', $options);
+    }
+
+    /**
      * Generates a drop-down list.
      * @param string $name the input name
      * @param string|array|null $selection the selected value(s). String for single or array for multiple selection(s).
