@@ -120,6 +120,7 @@ class ActiveField extends BaseActiveField
 
     public function hiddenInput($options = [])
     {
+        $this->template = '{input}';
         $options = array_merge($this->inputOptions, $options);
         $this->parts['{input}'] = Html::activeHiddenInput($this->model, $this->attribute, $options);
 
