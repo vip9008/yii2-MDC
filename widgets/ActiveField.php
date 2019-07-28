@@ -249,10 +249,14 @@ class ActiveField extends BaseActiveField
 
         if ($dropDownListType == 'searchable') {
             $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                                      Html::tag('input', null, ['class' => 'input', 'type' => 'text', 'value' => $value]);
+                                      Html::beginTag('div', ['class' => 'input']).
+                                      Html::tag('input', null, ['class' => 'input-element', 'type' => 'text', 'value' => $value]).
+                                      Html::endTag('div');
         } else {
             $this->parts['{value}'] = Html::tag('div', 'arrow_drop_down', ['class' => 'icon material-icon trailing']).
-                                      Html::tag('div', $value, ['class' => 'input']);
+                                      Html::beginTag('div', ['class' => 'input']).
+                                      Html::tag('div', $value, ['class' => 'input-element']).
+                                      Html::endTag('div');
         }
 
         $options['class'] = 'select-value';
