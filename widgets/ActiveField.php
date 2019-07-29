@@ -145,7 +145,7 @@ class ActiveField extends BaseActiveField
         $description = ArrayHelper::remove($options, 'description', '');
 
         if ($enclosedByLabel) {
-            $label = ArrayHelper::remove($options, 'label', "\n{label}\n");
+            $label = "\n{label}\n";
             if (!empty($description)) {
                 $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
                 Html::addCssClass($this->options, ['md-3line']);
@@ -279,15 +279,23 @@ class ActiveField extends BaseActiveField
     public function radioList($items, $options = [])
     {
         $containerOptions = ArrayHelper::remove($options, 'containerOptions', []);
-        Html::addCssClass($containerOptions, ['mdc-list-group', 'md-3line']);
-        $this->template = Html::tag('div', "\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']), $containerOptions);
+        Html::addCssClass($this->options, ['mdc-list-group', 'md-3line']);
+        $this->options = array_merge($this->options, $containerOptions);
+        $this->template = "\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']);
 
         $content = [];
-        foreach ($items as $label => $desc) {
+        foreach ($items as $label => $description) {
             $_options = $options;
-            $_options['label'] = $label;
-            $_options['description'] = $desc;
-            $content[] = $this->booleanField('radio', $_options, true);
+            $_options['value'] = $label;
+            Html::addCssClass($_options, $this->themeColor);
+            $_options = array_merge($this->inputOptions, $_options);
+
+            $content[] = Html::beginTag('div', ['class' => 'mdc-list-item']);
+            $content[] = Html::activeRadio($this->model, $this->attribute, $_options);
+            $content[] = Html::beginTag('div', ['class' => 'text']);
+            $content[] = $label.Html::tag('div', $description, ['class' => 'secondary']);
+            $content[] = Html::endTag('div');
+            $content[] = Html::endTag('div');
         }
 
         $this->parts['{input}'] = implode("\n", $content);
