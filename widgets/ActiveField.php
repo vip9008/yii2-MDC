@@ -290,6 +290,9 @@ class ActiveField extends BaseActiveField
         unset($options['autocomplete']);
         $options['listItem'] = true;
 
+        $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
+        Html::addCssClass($itemOptions, ['mdc-list-item']);
+
         $content = [];
         foreach ($items as $label => $description) {
             $_options = $options;
@@ -297,7 +300,7 @@ class ActiveField extends BaseActiveField
             Html::addCssClass($_options, $this->themeColor);
             $_options = array_merge($this->inputOptions, $_options);
 
-            $content[] = Html::beginTag('div', ['class' => 'mdc-list-item']);
+            $content[] = Html::beginTag('div', $itemOptions);
             $content[] = Html::activeRadio($this->model, $this->attribute, $_options);
             $content[] = Html::beginTag('div', ['class' => 'text']);
             $content[] = $label.Html::tag('div', $description, ['class' => 'secondary']);
