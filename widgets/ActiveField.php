@@ -283,7 +283,7 @@ class ActiveField extends BaseActiveField
         if (empty($options['id'])) {
              $containerOptions['id'] = Html::getInputId($this->model, $this->attribute);
         }
-        Html::addCssClass($containerOptions, ['mdc-list-group', 'md-3line']);
+        Html::addCssClass($containerOptions, ['mdc-list-group']);
         $this->options = array_merge($this->options, $containerOptions);
         $this->template = Html::tag('div', "\n{label}\n", ['class' => 'mdc-list-subtitle'])."\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']);
 
@@ -293,20 +293,31 @@ class ActiveField extends BaseActiveField
         $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
         Html::addCssClass($itemOptions, ['mdc-list-item']);
 
-        $content = [];
-        foreach ($items as $label => $description) {
+        $content[] = Html::divider();
+        foreach ($items as $value => $label) {
+            $_itemOptions = $itemOptions;
             $_options = $options;
-            $_options['value'] = $label;
+            $_options['value'] = $value;
             Html::addCssClass($_options, $this->themeColor);
             $_options = array_merge($this->inputOptions, $_options);
 
-            $content[] = Html::beginTag('div', $itemOptions);
+            if (is_array($label)) {
+                $description = ArrayHelper::getValue($label, 'description', '');
+                $label = ArrayHelper::getValue($label, 'label', '');
+            }
+            if (!empty($description)) {
+                $description = Html::tag('div', $description, ['class' => 'secondary']);
+                Html::addCssClass($_itemOptions, ['md-3line']);
+            }
+
+            $content[] = Html::beginTag('div', $_itemOptions);
             $content[] = Html::activeRadio($this->model, $this->attribute, $_options);
             $content[] = Html::beginTag('div', ['class' => 'text']);
-            $content[] = $label.Html::tag('div', $description, ['class' => 'secondary']);
+            $content[] = $label.$description;
             $content[] = Html::endTag('div');
             $content[] = Html::endTag('div');
         }
+        $content[] = Html::divider();
 
         $this->parts['{input}'] = implode("\n", $content);
         return $this;
