@@ -282,6 +282,9 @@ class ActiveField extends BaseActiveField
         $containerOptions['role'] = 'radiogroup';
         if (empty($options['id'])) {
              $containerOptions['id'] = Html::getInputId($this->model, $this->attribute);
+        } else {
+            $containerOptions['id'] = $options['id'];
+            unset($options['id']);
         }
         Html::addCssClass($containerOptions, ['mdc-list-group']);
         $this->options = array_merge($this->options, $containerOptions);
