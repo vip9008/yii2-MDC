@@ -141,20 +141,24 @@ class ActiveField extends BaseActiveField
 
     public function radio($options = [], $enclosedByLabel = true)
     {
+        $this->template = "\n{input}\n";
+        $description = ArrayHelper::remove($options, 'description', '');
+
         if ($enclosedByLabel) {
-            $this->parts['{input}'] = Html::activeRadio($this->model, $this->attribute, $options);
-            $this->parts['{label}'] = '';
-        } else {
-            if (isset($options['label']) && !isset($this->parts['{label}'])) {
-                $this->parts['{label}'] = $options['label'];
-                if (!empty($options['labelOptions'])) {
-                    $this->labelOptions = $options['labelOptions'];
-                }
+            $label = "\n{label}\n";
+            if (!empty($description)) {
+                $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
+                Html::addCssClass($this->options, ['md-3line']);
             }
-            unset($options['labelOptions']);
-            $options['label'] = null;
-            $this->parts['{input}'] = Html::activeRadio($this->model, $this->attribute, $options);
+            $this->template = "\n{input}\n" . Html::tag('div', $label, ['class' => 'text']) . "\n";
         }
+
+        Html::addCssClass($this->options, ['mdc-list-item']);
+
+        $options = array_merge($this->inputOptions, $options);
+        Html::addCssClass($options, $this->themeColor);
+
+        $this->parts['{input}'] = Html::activeRadio($this->model, $this->attribute, $options);
 
         return $this;
     }

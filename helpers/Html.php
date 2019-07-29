@@ -617,6 +617,25 @@ class Html extends BaseHtml
                 );
             break;
 
+            case 'radio':
+                $containerOptions = [
+                    'class' => ArrayHelper::remove($options, 'class', ''),
+                    'tabindex' => ArrayHelper::remove($options, 'tabindex', '0'),
+                ];
+
+                static::addCssClass($containerOptions, 'mdc-radiobutton');
+
+                $options['type'] = 'radio';
+                $options['name'] = $name;
+                $options['checked'] = (bool) $checked;
+
+                return static::tag(
+                    'div',
+                    static::tag('input', null, $options),
+                    $containerOptions
+                );
+            break;
+
             default:
                 return static::input($type, $name, $checked, $options);
         }
