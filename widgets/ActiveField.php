@@ -301,6 +301,8 @@ class ActiveField extends BaseActiveField
             Html::addCssClass($_options, $this->themeColor);
             $_options = array_merge($this->inputOptions, $_options);
 
+            $description = '';
+
             if (is_array($label)) {
                 $description = ArrayHelper::getValue($label, 'description', '');
                 $label = ArrayHelper::getValue($label, 'label', '');
