@@ -279,9 +279,16 @@ class ActiveField extends BaseActiveField
     public function radioList($items, $options = [])
     {
         $containerOptions = ArrayHelper::remove($options, 'containerOptions', []);
+        $containerOptions['role'] = 'radiogroup';
+        if (empty($options['id'])) {
+             $containerOptions['id'] = Html::getInputId($this->model, $this->attribute);
+        }
         Html::addCssClass($this->options, ['mdc-list-group', 'md-3line']);
         $this->options = array_merge($this->options, $containerOptions);
         $this->template = "\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']);
+
+        unset($options['autocomplete']);
+        $options['listItem'] = true;
 
         $content = [];
         foreach ($items as $label => $description) {
