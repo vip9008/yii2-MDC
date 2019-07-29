@@ -139,13 +139,13 @@ class ActiveField extends BaseActiveField
         return $this;
     }
 
-    public function radio($options = [], $enclosedByLabel = true)
+    protected function booleanField($type, $options = [], $enclosedByLabel = true)
     {
         $this->template = "\n{input}\n";
         $description = ArrayHelper::remove($options, 'description', '');
 
         if ($enclosedByLabel) {
-            $label = "\n{label}\n";
+            $label = ArrayHelper::remove($options, 'label', "\n{label}\n");
             if (!empty($description)) {
                 $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
                 Html::addCssClass($this->options, ['md-3line']);
@@ -158,56 +158,24 @@ class ActiveField extends BaseActiveField
         $options = array_merge($this->inputOptions, $options);
         Html::addCssClass($options, $this->themeColor);
 
-        $this->parts['{input}'] = Html::activeRadio($this->model, $this->attribute, $options);
+        return Html::{"active".ucfirst($type)}($this->model, $this->attribute, $options);
+    }
 
+    public function radio($options = [], $enclosedByLabel = true)
+    {
+        $this->parts['{input}'] = $this->booleanField('radio', $options, $enclosedByLabel);
         return $this;
     }
 
     public function checkbox($options = [], $enclosedByLabel = true)
     {
-        $this->template = "\n{input}\n";
-        $description = ArrayHelper::remove($options, 'description', '');
-
-        if ($enclosedByLabel) {
-            $label = "\n{label}\n";
-            if (!empty($description)) {
-                $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
-                Html::addCssClass($this->options, ['md-3line']);
-            }
-            $this->template = "\n{input}\n" . Html::tag('div', $label, ['class' => 'text']) . "\n";
-        }
-
-        Html::addCssClass($this->options, ['mdc-list-item']);
-
-        $options = array_merge($this->inputOptions, $options);
-        Html::addCssClass($options, $this->themeColor);
-
-        $this->parts['{input}'] = Html::activeCheckbox($this->model, $this->attribute, $options);
-
+        $this->parts['{input}'] = $this->booleanField('checkbox', $options, $enclosedByLabel);
         return $this;
     }
 
     public function switch($options = [], $enclosedByLabel = true)
     {
-        $this->template = "\n{input}\n";
-        $description = ArrayHelper::remove($options, 'description', '');
-
-        if ($enclosedByLabel) {
-            $label = "\n{label}\n";
-            if (!empty($description)) {
-                $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
-                Html::addCssClass($this->options, ['md-3line']);
-            }
-            $this->template = "\n" . Html::tag('div', $label, ['class' => 'text']) . "\n{input}\n";
-        }
-
-        Html::addCssClass($this->options, ['mdc-list-item']);
-
-        $options = array_merge($this->inputOptions, $options);
-        Html::addCssClass($options, $this->themeColor);
-
-        $this->parts['{input}'] = Html::activeSwitch($this->model, $this->attribute, $options);
-
+        $this->parts['{input}'] = $this->booleanField('switch', $options, $enclosedByLabel);
         return $this;
     }
 
@@ -293,9 +261,8 @@ class ActiveField extends BaseActiveField
      */
     public function checkboxList($items, $options = [])
     {
-        $this->_skipLabelFor = true;
+        // $this->_skipLabelFor = true;
         $this->parts['{input}'] = Html::activeCheckboxList($this->model, $this->attribute, $items, $options);
-
         return $this;
     }
 
@@ -311,9 +278,19 @@ class ActiveField extends BaseActiveField
      */
     public function radioList($items, $options = [])
     {
-        $this->_skipLabelFor = true;
-        $this->parts['{input}'] = Html::activeRadioList($this->model, $this->attribute, $items, $options);
+        $containerOptions = ArrayHelper::remove($options, 'containerOptions', []);
+        Html::addCssClass($containerOptions, ['mdc-list-group', 'md-3line']);
+        $this->template = Html::tag('div', "\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']), $containerOptions);
 
+        $content = [];
+        foreach ($items as $label => $desc) {
+            $_options = $options;
+            $_options['label'] = $label;
+            $_options['description'] = $desc;
+            $content[] = $this->booleanField('radio', $_options, true);
+        }
+
+        $this->parts['{input}'] = implode("\n", $content);
         return $this;
     }
 }
