@@ -283,7 +283,7 @@ class ActiveField extends BaseActiveField
         if (empty($options['id'])) {
              $containerOptions['id'] = Html::getInputId($this->model, $this->attribute);
         }
-        Html::addCssClass($this->options, ['mdc-list-group', 'md-3line']);
+        Html::addCssClass($containerOptions, ['mdc-list-group', 'md-3line']);
         $this->options = array_merge($this->options, $containerOptions);
         $this->template = Html::tag('div', "\n{label}\n", ['class' => 'mdc-list-subtitle'])."\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']);
 
