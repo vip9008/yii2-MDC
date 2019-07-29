@@ -285,7 +285,7 @@ class ActiveField extends BaseActiveField
         }
         Html::addCssClass($this->options, ['mdc-list-group', 'md-3line']);
         $this->options = array_merge($this->options, $containerOptions);
-        $this->template = "\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']);
+        $this->template = Html::tag('div', "\n{label}\n", ['class' => 'mdc-list-subtitle'])."\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']);
 
         unset($options['autocomplete']);
         $options['listItem'] = true;
