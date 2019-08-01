@@ -121,6 +121,9 @@ class ActiveField extends BaseActiveField
     public function hiddenInput($options = [])
     {
         $this->template = "{input}\n{hint}\n{error}";
+        Html::addCssClass($this->errorOptions, ['mdt-caption']);
+        Html::addCssClass($this->hintOptions, ['mdt-caption']);
+        
         $options = array_merge($this->inputOptions, $options);
         $this->parts['{input}'] = Html::activeHiddenInput($this->model, $this->attribute, $options);
 
