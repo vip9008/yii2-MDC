@@ -7,21 +7,10 @@ use yii\helpers\Html as BaseHtml;
 
 class Html extends BaseHtml
 {
-    /**
-     * Find a css class in a set of html options.
-     * @param array $options: html options in terms of name-value pairs.
-     * @param string $class: the css class to be find in $options.
-     *
-     * @return bool
-     */
-    public static function findCssClass($options, $class)
+    public static function beginForm($action = '', $method = 'post', $options = [])
     {
-        $classes = ArrayHelper::getValue($options, 'class', []);
-        if (!is_array($classes)) {
-            $classes = explode(' ', $classes);
-        }
-
-        return in_array($class, $classes);
+        self::addCssClass($options, ['mdc-form']);
+        return parent::beginForm($action, $method, $options);
     }
 
     /**
@@ -660,6 +649,23 @@ class Html extends BaseHtml
             default:
                 return static::input($type, $name, $checked, $options);
         }
+    }
+
+    /**
+     * Find a css class in a set of html options.
+     * @param array $options: html options in terms of name-value pairs.
+     * @param string $class: the css class to be find in $options.
+     *
+     * @return bool
+     */
+    public static function findCssClass($options, $class)
+    {
+        $classes = ArrayHelper::getValue($options, 'class', []);
+        if (!is_array($classes)) {
+            $classes = explode(' ', $classes);
+        }
+
+        return in_array($class, $classes);
     }
 
     public static function arrayValueSearch($array, $index, $return = null)
