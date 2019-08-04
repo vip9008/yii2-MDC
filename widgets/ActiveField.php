@@ -200,7 +200,7 @@ class ActiveField extends BaseActiveField
             $error_message = ArrayHelper::remove($options, 'errorMessage', "Can't find any match!");
         }
 
-        $buttonTag = ArrayHelper::remove($options, 'dropdownButtonTag', "div");
+        $buttonTag = ArrayHelper::remove($options, 'dropdownButtonTag', "button");
 
         $this->template = Html::tag($buttonTag, "\n{value}\n{label}\n{input}\n{hint}\n{error}\n", $options) .
                           Html::tag('div', "\n{list}\n", ['class' => 'mdc-list-container']);

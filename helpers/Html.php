@@ -306,7 +306,9 @@ class Html extends BaseHtml
             $selectionValue = trim(strip_tags($doc->saveHTML()));
         }
 
-        $inputElement = static::tag('div', static::tag('div', $selectionValue, ['class' => 'input-element']), ['class' => 'input']);
+        $buttonTag = ArrayHelper::remove($_options, 'dropdownButtonTag', "button");
+
+        $inputElement = static::tag($buttonTag, static::tag('div', $selectionValue, ['class' => 'input-element']), ['class' => 'input']);
         if (self::findCssClass($_options, 'mdc-searchable')) {
             $inputElement = static::tag('div', static::tag('input', $selectionValue, ['class' => 'input-element', 'type' => 'text']), ['class' => 'input']);
         }
