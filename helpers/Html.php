@@ -563,6 +563,23 @@ class Html extends BaseHtml
     }
 
     /**
+     * Generates a button tag.
+     * @param string $content the content enclosed within the button tag. It will NOT be HTML-encoded.
+     * Therefore you can pass in HTML code such as an image tag. If this is is coming from end users,
+     * you should consider [[encode()]] it to prevent XSS attacks.
+     * @param array $options the tag options in terms of name-value pairs. These will be rendered as
+     * the attributes of the resulting tag. The values will be HTML-encoded using [[encode()]].
+     * If a value is null, the corresponding attribute will not be rendered.
+     * See [[renderTagAttributes()]] for details on how attributes are being rendered.
+     * @return string the generated button tag
+     */
+    public static function button($content = 'Button', $options = [])
+    {
+        self::addCssClass($options, ['mdc-button']);
+        return parent::button($content, $options);
+    }
+
+    /**
      * Generates a boolean input.
      * @param string $type the input type. This can be either `radio` or `checkbox`.
      * @param string $name the name attribute.
