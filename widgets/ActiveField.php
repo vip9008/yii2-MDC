@@ -154,6 +154,9 @@ class ActiveField extends BaseActiveField
                 Html::addCssClass($this->options, ['md-3line']);
             }
             $this->template = "\n{input}\n" . Html::tag('div', $label, ['class' => 'text']) . "\n";
+            if ($type == 'switch') {
+                $this->template = "\n" . Html::tag('div', $label, ['class' => 'text']) . "\n{input}\n";
+            }
         }
 
         Html::addCssClass($this->options, ['mdc-list-item']);
