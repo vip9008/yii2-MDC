@@ -7,9 +7,8 @@ use yii\helpers\Html as BaseHtml;
 
 class Html extends BaseHtml
 {
-    public static function beginForm($action = '', $method = 'post', $options = [])
+    public static function beginForm($action = '', $method = 'post', $options = ['class' => 'mdc-form'])
     {
-        self::addCssClass($options, ['mdc-form']);
         return parent::beginForm($action, $method, $options);
     }
 
