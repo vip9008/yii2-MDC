@@ -562,9 +562,8 @@ class Html extends BaseHtml
      * See [[renderTagAttributes()]] for details on how attributes are being rendered.
      * @return string the generated button tag
      */
-    public static function button($content = 'Button', $options = [])
+    public static function button($content = 'Button', $options = ['class' => 'mdc-button'])
     {
-        self::addCssClass($options, ['mdc-button']);
         return parent::button($content, $options);
     }
 
