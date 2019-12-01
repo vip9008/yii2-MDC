@@ -15,5 +15,6 @@ class PickerAsset extends AssetBundle
     ];
     public $depends = [
         'vip9008\MDC\assets\MaterialGrid',
+        'vip9008\MDC\assets\TextFieldAsset',
     ];
 }
