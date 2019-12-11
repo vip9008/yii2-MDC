@@ -11,7 +11,6 @@ class FABAsset extends AssetBundle
         "css/mdc.button.fab.css",
     ];
     public $js = [
-        "js/mdc.button.fab.js",
     ];
     public $depends = [
         'vip9008\MDC\assets\MaterialGrid',
