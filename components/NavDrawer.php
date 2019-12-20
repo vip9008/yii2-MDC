@@ -188,7 +188,7 @@ class NavDrawer extends \yii\base\Widget
             $items[] = $this->renderItem($item);
         }
 
-        return Html::tag('div', implode("\n", $items), ['class' => 'mdc-list-container']);
+        return implode("\n", $items);
     }
 
     public function renderItem($item)
