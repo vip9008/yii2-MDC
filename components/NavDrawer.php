@@ -86,7 +86,7 @@ class NavDrawer extends \yii\base\Widget
     public $primaryColor = 'deep-purple-A700';
     public $accentColor = '';
 
-    // nanoScroller
+    // overlayScroller
     public $customScroller = false;
     public $scrollerOptions = [];
 
@@ -124,10 +124,9 @@ class NavDrawer extends \yii\base\Widget
         $scrollerBegin = '';
         $scrollerEnd = '';
         if ($this->customScroller) {
-            Html::addCssClass($this->scrollerOptions, 'nano');
+            Html::addCssClass($this->scrollerOptions, 'overlay-scrollbars');
             $scrollerBegin .= Html::beginTag('div', $this->scrollerOptions)."\n";
-            $scrollerBegin .= Html::beginTag('div', ['class' => 'nano-content'])."\n";
-            $scrollerEnd .= Html::endTag('div')."\n".Html::endTag('div')."\n";
+            $scrollerEnd .= Html::endTag('div')."\n";
         }
 
         $content = $this->renderItems() . $scrollerEnd;
