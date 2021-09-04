@@ -28,7 +28,11 @@ class ActionColumn extends BaseActionColumn
      * @var array html options to be applied to the [[initDefaultButton()|default button]].
      * @since 2.0.4
      */
-    public $buttonOptions = ['class' => 'material-icon'];
+    public $buttonOptions = [];
+    /**
+     * @var bool action menu mode. if true action buttons will be rendered as dropdown menu.
+     */
+    public $menuMode = false;
 
     /**
      * Initializes the default button rendering callbacks.
@@ -56,13 +60,13 @@ class ActionColumn extends BaseActionColumn
             $this->buttons[$name] = function ($url, $model, $key) use ($name, $iconName, $additionalOptions) {
                 switch ($name) {
                     case 'view':
-                        $title = Yii::t('yii', 'View');
+                        $title = Yii::t('yii', 'Show details');
                         break;
                     case 'update':
-                        $title = Yii::t('yii', 'Update');
+                        $title = Yii::t('yii', 'Update information');
                         break;
                     case 'delete':
-                        $title = Yii::t('yii', 'Delete');
+                        $title = Yii::t('yii', 'Delete record');
                         break;
                     default:
                         $title = ucfirst($name);
@@ -73,8 +77,19 @@ class ActionColumn extends BaseActionColumn
                     'aria-label' => $title,
                     'data-pjax' => '0',
                 ], $additionalOptions, $this->buttonOptions);
-                Html::addCssClass($options, 'icon');
 
+                if ($this->menuMode) {
+                    Html::addCssClass($options, 'mdc-list-item');
+
+                    return Html::a(
+                        Html::tag('div', Html::tag('div', $iconName, ['class' => 'material-icon']), ['class' => 'icon']).
+                        Html::tag('div', $title, ['class' => 'text']),
+                        $url,
+                        $options
+                    );
+                }
+
+                Html::addCssClass($options, 'material-icon icon');
                 return Html::tag('div', Html::a($iconName, $url, $options), ['class' => 'action-item']);
             };
         }
@@ -88,9 +103,18 @@ class ActionColumn extends BaseActionColumn
             $options = $this->contentOptions;
         }
 
-        $actions = Html::tag('div', $this->renderDataCellContent($model, $key, $index), ['class' => 'actions']);
-        $actions = Html::tag('div', $actions, ['class' => 'cell-data action-container']);
-
+        if ($this->menuMode) {
+            $actions = Html::tag('div',
+                Html::button('more_vert', ['class' => 'material-icon icon menu-button']).
+                Html::tag('div',
+                    Html::tag('div', $this->renderDataCellContent($model, $key, $index), ['class' => 'mdc-list-group']),
+                ['class' => 'mdc-list-container', 'tabindex' => '-1']),
+            ['class' => 'action-item mdc-menu-container reverse']);
+        } else {
+            $actions = $this->renderDataCellContent($model, $key, $index);
+        }
+        
+        $actions = Html::tag('div', Html::tag('div', $actions, ['class' => 'actions']), ['class' => 'cell-data action-container']);
         return Html::tag('td', $actions, $options);
     }
 
