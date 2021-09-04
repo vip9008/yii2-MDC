@@ -82,7 +82,7 @@ class ActionColumn extends BaseActionColumn
                     Html::addCssClass($options, 'mdc-list-item');
 
                     return Html::a(
-                        Html::tag('div', Html::tag('div', $iconName, ['class' => 'material-icon']), ['class' => 'icon']).
+                        Html::tag('div', $iconName, ['class' => 'material-icon icon']).
                         Html::tag('div', $title, ['class' => 'text']),
                         $url,
                         $options
