@@ -296,7 +296,7 @@ class ActiveField extends BaseActiveField
         }
         Html::addCssClass($containerOptions, ['mdc-list-group']);
         $this->options = array_merge($this->options, $containerOptions);
-        $this->template = Html::tag('div', "\n{label}\n", ['class' => 'mdc-list-subtitle'])."\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle']);
+        $this->template = Html::tag('div', "\n{label}\n", ['class' => 'mdc-list-subtitle', 'style' => 'padding-bottom: 0;'])."\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle', 'style' => 'padding-top: 0;']);
 
         unset($options['autocomplete']);
         $options['listItem'] = true;
@@ -304,7 +304,7 @@ class ActiveField extends BaseActiveField
         $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
         Html::addCssClass($itemOptions, ['mdc-list-item']);
 
-        $content[] = Html::divider();
+        $content = [];
         foreach ($items as $value => $label) {
             $_itemOptions = $itemOptions;
             $_options = $options;
@@ -330,7 +330,6 @@ class ActiveField extends BaseActiveField
             $content[] = Html::endTag('div');
             $content[] = Html::endTag('div');
         }
-        $content[] = Html::divider();
 
         $this->parts['{input}'] = implode("\n", $content);
         return $this;
