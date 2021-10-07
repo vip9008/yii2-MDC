@@ -68,9 +68,9 @@ class TopAppBar extends \yii\base\Widget
                 $label = ArrayHelper::getValue($this->title, 'label', '');
                 $options = ArrayHelper::getValue($this->title, 'options', []);
                 Html::addCssClass($options, 'title');
-                $barContent[] = Html::tag('span', $label, $options);
+                $barContent[] = Html::tag('div', $label, $options);
             } else {
-                $barContent[] = Html::tag('span', $this->title, ['class' => 'title']);
+                $barContent[] = Html::tag('div', $this->title, ['class' => 'title']);
             }
         }
 
