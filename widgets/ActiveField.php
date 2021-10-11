@@ -309,9 +309,9 @@ class ActiveField extends BaseActiveField
             $meta = '';
 
             if (is_array($label)) {
-                $label = ArrayHelper::getValue($label, 'label', '');
                 $description = ArrayHelper::getValue($label, 'description', '');
                 $meta = ArrayHelper::getValue($label, 'meta', '');
+                $label = ArrayHelper::getValue($label, 'label', '');
             }
             if (!empty($description)) {
                 $description = Html::tag('div', $description, ['class' => 'secondary']);
@@ -385,9 +385,9 @@ class ActiveField extends BaseActiveField
             $meta = '';
 
             if (is_array($label)) {
-                $label = ArrayHelper::getValue($label, 'label', '');
                 $description = ArrayHelper::getValue($label, 'description', '');
                 $meta = ArrayHelper::getValue($label, 'meta', '');
+                $label = ArrayHelper::getValue($label, 'label', '');
             }
             if (!empty($description)) {
                 $description = Html::tag('div', $description, ['class' => 'secondary']);
