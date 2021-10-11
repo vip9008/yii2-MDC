@@ -317,7 +317,7 @@ class ActiveField extends BaseActiveField
                 $description = Html::tag('div', $description, ['class' => 'secondary']);
                 Html::addCssClass($_itemOptions, ['md-3line']);
             }
-            if (!empty($description)) {
+            if (!empty($meta)) {
                 $meta = Html::tag('div', $meta, ['class' => 'meta']);
             }
 
@@ -393,7 +393,7 @@ class ActiveField extends BaseActiveField
                 $description = Html::tag('div', $description, ['class' => 'secondary']);
                 Html::addCssClass($_itemOptions, ['md-3line']);
             }
-            if (!empty($description)) {
+            if (!empty($meta)) {
                 $meta = Html::tag('div', $meta, ['class' => 'meta']);
             }
 
