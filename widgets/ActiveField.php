@@ -269,8 +269,60 @@ class ActiveField extends BaseActiveField
      */
     public function checkboxList($items, $options = [])
     {
-        // $this->_skipLabelFor = true;
-        $this->parts['{input}'] = Html::activeCheckboxList($this->model, $this->attribute, $items, $options);
+        $containerOptions = ArrayHelper::remove($options, 'containerOptions', []);
+        
+        if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
+            $this->addErrorClassIfNeeded($containerOptions);
+        }
+
+        $this->addAriaAttributes($containerOptions);
+        $this->adjustLabelFor($containerOptions);
+        $this->_skipLabelFor = true;
+        
+        if (empty($options['id'])) {
+             $containerOptions['id'] = Html::getInputId($this->model, $this->attribute);
+        } else {
+            $containerOptions['id'] = $options['id'];
+            unset($options['id']);
+        }
+        Html::addCssClass($containerOptions, ['mdc-list-group']);
+        $this->options = array_merge($this->options, $containerOptions);
+        $this->template = Html::tag('div', "\n{label}\n", ['class' => 'mdc-list-subtitle', 'style' => 'padding-bottom: 0;'])."\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle', 'style' => 'padding-top: 0;']);
+
+        unset($options['autocomplete']);
+        $options['listItem'] = true;
+
+        $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
+        Html::addCssClass($itemOptions, ['mdc-list-item']);
+
+        $content = [];
+        foreach ($items as $value => $label) {
+            $_itemOptions = $itemOptions;
+            $_options = $options;
+            $_options['value'] = $value;
+            Html::addCssClass($_options, $this->themeColor);
+            $_options = array_merge($this->inputOptions, $_options);
+
+            $description = '';
+
+            if (is_array($label)) {
+                $description = ArrayHelper::getValue($label, 'description', '');
+                $label = ArrayHelper::getValue($label, 'label', '');
+            }
+            if (!empty($description)) {
+                $description = Html::tag('div', $description, ['class' => 'secondary']);
+                Html::addCssClass($_itemOptions, ['md-3line']);
+            }
+
+            $content[] = Html::beginTag('div', $_itemOptions);
+            $content[] = Html::activeCheckbox($this->model, $this->attribute, $_options);
+            $content[] = Html::beginTag('div', ['class' => 'text']);
+            $content[] = $label.$description;
+            $content[] = Html::endTag('div');
+            $content[] = Html::endTag('div');
+        }
+
+        $this->parts['{input}'] = implode("\n", $content);
         return $this;
     }
 
@@ -287,7 +339,16 @@ class ActiveField extends BaseActiveField
     public function radioList($items, $options = [])
     {
         $containerOptions = ArrayHelper::remove($options, 'containerOptions', []);
-        $containerOptions['role'] = 'radiogroup';
+
+        if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
+            $this->addErrorClassIfNeeded($containerOptions);
+        }
+
+        $this->addRoleAttributes($containerOptions, 'radiogroup');
+        $this->addAriaAttributes($containerOptions);
+        $this->adjustLabelFor($containerOptions);
+        $this->_skipLabelFor = true;
+        
         if (empty($options['id'])) {
              $containerOptions['id'] = Html::getInputId($this->model, $this->attribute);
         } else {
