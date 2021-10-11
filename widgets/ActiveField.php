@@ -306,14 +306,19 @@ class ActiveField extends BaseActiveField
             $_options = array_merge($this->inputOptions, $_options);
 
             $description = '';
+            $meta = '';
 
             if (is_array($label)) {
-                $description = ArrayHelper::getValue($label, 'description', '');
                 $label = ArrayHelper::getValue($label, 'label', '');
+                $description = ArrayHelper::getValue($label, 'description', '');
+                $meta = ArrayHelper::getValue($label, 'meta', '');
             }
             if (!empty($description)) {
                 $description = Html::tag('div', $description, ['class' => 'secondary']);
                 Html::addCssClass($_itemOptions, ['md-3line']);
+            }
+            if (!empty($description)) {
+                $meta = Html::tag('div', $meta, ['class' => 'meta']);
             }
 
             $content[] = Html::beginTag('div', $_itemOptions);
@@ -321,6 +326,7 @@ class ActiveField extends BaseActiveField
             $content[] = Html::beginTag('div', ['class' => 'text']);
             $content[] = $label.$description;
             $content[] = Html::endTag('div');
+            $content[] = $meta;
             $content[] = Html::endTag('div');
         }
 
@@ -376,14 +382,19 @@ class ActiveField extends BaseActiveField
             $_options = array_merge($this->inputOptions, $_options);
 
             $description = '';
+            $meta = '';
 
             if (is_array($label)) {
-                $description = ArrayHelper::getValue($label, 'description', '');
                 $label = ArrayHelper::getValue($label, 'label', '');
+                $description = ArrayHelper::getValue($label, 'description', '');
+                $meta = ArrayHelper::getValue($label, 'meta', '');
             }
             if (!empty($description)) {
                 $description = Html::tag('div', $description, ['class' => 'secondary']);
                 Html::addCssClass($_itemOptions, ['md-3line']);
+            }
+            if (!empty($description)) {
+                $meta = Html::tag('div', $meta, ['class' => 'meta']);
             }
 
             $content[] = Html::beginTag('div', $_itemOptions);
@@ -391,6 +402,7 @@ class ActiveField extends BaseActiveField
             $content[] = Html::beginTag('div', ['class' => 'text']);
             $content[] = $label.$description;
             $content[] = Html::endTag('div');
+            $content[] = $meta;
             $content[] = Html::endTag('div');
         }
 
