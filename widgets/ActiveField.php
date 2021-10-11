@@ -20,6 +20,8 @@ class ActiveField extends BaseActiveField
     public $errorOptions = ['class' => 'help-block'];
     public $labelOptions = [];
     public $hintOptions = ['class' => 'hint-block'];
+    
+    private $_skipLabelFor = false;
 
     public function begin()
     {
