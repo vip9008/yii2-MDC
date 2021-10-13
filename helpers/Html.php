@@ -589,6 +589,13 @@ class Html extends BaseHtml
         $lines = [];
         $index = 0;
         foreach ($items as $value => $label) {
+            $_name = $name;
+            if (substr($_name, -2) !== '[]') {
+                $_name .= "[$index]";
+            } else {
+                $_name = substr($_name, 0, -2) . "[$index]";
+            }
+            
             $_itemOptions = $itemOptions;
             $_options = $options;
             unset($_options['id']);
@@ -597,7 +604,7 @@ class Html extends BaseHtml
 
             $checked = $selection !== null && (!ArrayHelper::isTraversable($selection) && !strcmp($value, $selection) || ArrayHelper::isTraversable($selection) && ArrayHelper::isIn((string)$value, $selection, $strict));
             if ($formatter !== null) {
-                $lines[] = call_user_func($formatter, $index, $label, $name, $checked, $value);
+                $lines[] = call_user_func($formatter, $index, $label, $_name, $checked, $value);
             } else {
                 $description = '';
                 $meta = '';
@@ -617,7 +624,7 @@ class Html extends BaseHtml
                 }
 
                 $lines[] = static::beginTag('div', $_itemOptions);
-                $lines[] = static::checkbox($name, $checked, $_options);
+                $lines[] = static::checkbox($_name, $checked, $_options);
                 $lines[] = static::beginTag('div', ['class' => 'text']);
                 $lines[] = $label.$description;
                 $lines[] = static::endTag('div');
