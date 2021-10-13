@@ -606,7 +606,8 @@ class Html extends BaseHtml
 
                 static::addCssClass($containerOptions, 'mdc-checkbox');
 
-                return static::tag('div', static::hiddenInput($name, $checked, $options), $containerOptions);
+                // return static::tag('div', static::hiddenInput($name, $checked, $options), $containerOptions);
+                return static::tag('div', parent::booleanInput($type, $name, $checked, $options), $containerOptions);
             break;
 
             case 'switch':
@@ -620,7 +621,8 @@ class Html extends BaseHtml
                 return static::tag(
                     'div',
                     static::tag('div', '', ['class' => 'rail']).
-                    static::hiddenInput($name, $checked, $options),
+                    // static::hiddenInput($name, $checked, $options),
+                    parent::booleanInput('checkbox', $name, $checked, $options),
                     $containerOptions
                 );
             break;
