@@ -272,7 +272,7 @@ class ActiveField extends BaseActiveField
     public function checkboxList($items, $options = [])
     {
         $containerOptions = ArrayHelper::remove($options, 'containerOptions', []);
-        
+
         if ($this->form->validationStateOn === ActiveForm::VALIDATION_STATE_ON_INPUT) {
             $this->addErrorClassIfNeeded($containerOptions);
         }
@@ -290,47 +290,9 @@ class ActiveField extends BaseActiveField
         Html::addCssClass($containerOptions, ['mdc-list-group']);
         $this->options = array_merge($this->options, $containerOptions);
         $this->template = Html::tag('div', "\n{label}\n", ['class' => 'mdc-list-subtitle', 'style' => 'padding-bottom: 0;'])."\n{input}\n".Html::tag('div', "\n{hint}\n{error}\n", ['class' => 'mdc-list-subtitle', 'style' => 'padding-top: 0;']);
+        $options['themeColor'] = $this->themeColor;
+        $this->parts['{input}'] = Html::activeCheckboxList($this->model, $this->attribute, $items, $options);
 
-        unset($options['autocomplete']);
-        $options['listItem'] = true;
-
-        $itemOptions = ArrayHelper::remove($options, 'itemOptions', []);
-        Html::addCssClass($itemOptions, ['mdc-list-item']);
-
-        $content = [];
-        foreach ($items as $value => $label) {
-            $_itemOptions = $itemOptions;
-            $_options = $options;
-            $_options['value'] = $value;
-            Html::addCssClass($_options, $this->themeColor);
-            $_options = array_merge($this->inputOptions, $_options);
-
-            $description = '';
-            $meta = '';
-
-            if (is_array($label)) {
-                $description = ArrayHelper::getValue($label, 'description', '');
-                $meta = ArrayHelper::getValue($label, 'meta', '');
-                $label = ArrayHelper::getValue($label, 'label', '');
-            }
-            if (!empty($description)) {
-                $description = Html::tag('div', $description, ['class' => 'secondary']);
-                Html::addCssClass($_itemOptions, ['md-3line']);
-            }
-            if (!empty($meta)) {
-                $meta = Html::tag('div', $meta, ['class' => 'meta']);
-            }
-
-            $content[] = Html::beginTag('div', $_itemOptions);
-            $content[] = Html::activeCheckbox($this->model, $this->attribute, $_options);
-            $content[] = Html::beginTag('div', ['class' => 'text']);
-            $content[] = $label.$description;
-            $content[] = Html::endTag('div');
-            $content[] = $meta;
-            $content[] = Html::endTag('div');
-        }
-
-        $this->parts['{input}'] = implode("\n", $content);
         return $this;
     }
 
