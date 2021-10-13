@@ -570,9 +570,6 @@ class Html extends BaseHtml
      */
     public static function checkboxList($name, $selection = null, $items = [], $options = [])
     {
-        if (substr($name, -2) !== '[]') {
-            $name .= '[]';
-        }
         if (ArrayHelper::isTraversable($selection)) {
             $selection = array_map('strval', ArrayHelper::toArray($selection));
         }
