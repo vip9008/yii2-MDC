@@ -591,6 +591,7 @@ class Html extends BaseHtml
         foreach ($items as $value => $label) {
             $_itemOptions = $itemOptions;
             $_options = $options;
+            unset($_options['id']);
             $_options['value'] = $value;
             static::addCssClass($_options, $themeColor);
 
