@@ -311,10 +311,15 @@ class Html extends BaseHtml
         $options['name'] = $name;
 
         $list = static::tag('div',
-                static::renderSelectOptions($selection, $items, $options),
-                ['class' => 'mdc-list-container']);
+                static::tag('div',
+                    static::renderSelectOptions($selection, $items, $options),
+                    ['class' => 'mdc-list-container']
+                ).
+                static::tag('div', '', ['class' => 'menu-scrim', 'tabindex' => '-1']),
+                ['class' => 'menu-container']
+            );
 
-        return static::tag('div', "\n$input\n$list\n", ['class' => 'mdc-menu-container select-menu', 'tabindex' => '-1']);
+        return static::tag('div', "\n$input\n$list\n", ['class' => 'mdc-menu-container select-menu']);
     }
 
     /**
@@ -727,28 +732,29 @@ class Html extends BaseHtml
             case 'checkbox':
                 $containerOptions = [
                     'class' => ArrayHelper::remove($options, 'class', ''),
-                    'tabindex' => ArrayHelper::remove($options, 'tabindex', '0'),
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-checkbox');
 
-                // return static::tag('div', static::hiddenInput($name, $checked, $options), $containerOptions);
-                return static::tag('div', parent::booleanInput($type, $name, $checked, $options), $containerOptions);
+                return static::tag(
+                    'div',
+                    parent::booleanInput('checkbox', $name, $checked, $options).
+                    static::tag('div', '', ['class' => 'control-icon']),
+                    $containerOptions
+                );
             break;
 
             case 'switch':
                 $containerOptions = [
                     'class' => ArrayHelper::remove($options, 'class', ''),
-                    'tabindex' => ArrayHelper::remove($options, 'tabindex', '0'),
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-switch');
 
                 return static::tag(
                     'div',
-                    static::tag('div', '', ['class' => 'rail']).
-                    // static::hiddenInput($name, $checked, $options),
-                    parent::booleanInput('checkbox', $name, $checked, $options),
+                    parent::booleanInput('checkbox', $name, $checked, $options).
+                    static::tag('div', static::tag('div', '', ['class' => 'rail']), ['class' => 'control-icon']),
                     $containerOptions
                 );
             break;
@@ -767,7 +773,8 @@ class Html extends BaseHtml
 
                 return static::tag(
                     'div',
-                    static::tag('input', null, $options),
+                    static::tag('input', null, $options).
+                    static::tag('div', '', ['class' => 'control-icon']),
                     $containerOptions
                 );
             break;
