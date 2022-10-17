@@ -107,8 +107,11 @@ class ActionColumn extends BaseActionColumn
             $actions = Html::tag('div',
                 Html::button('more_vert', ['class' => 'material-icon icon menu-button']).
                 Html::tag('div',
-                    Html::tag('div', $this->renderDataCellContent($model, $key, $index), ['class' => 'mdc-list-group']),
-                ['class' => 'mdc-list-container', 'tabindex' => '-1']),
+                    Html::tag('div',
+                        Html::tag('div', $this->renderDataCellContent($model, $key, $index), ['class' => 'mdc-list-group']),
+                    ['class' => 'mdc-list-container']),
+                ['class' => 'menu-container']).
+                Html::tag('div', '', ['class' => 'menu-scrim', 'tabindex' => '-1']),
             ['class' => 'action-item mdc-menu-container reverse']);
         } else {
             $actions = $this->renderDataCellContent($model, $key, $index);
