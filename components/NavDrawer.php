@@ -216,6 +216,10 @@ class NavDrawer extends \yii\base\Widget
 
         $dropdownItems = false;
         if (!empty($items) && is_array($items)) {
+            if (!is_array($dropdownItems)) {
+                $dropdownItems = [];
+            }
+
             foreach ($items as $subItem) {
                 if ($this->isItemActive($subItem)) {
                     $active = true;
