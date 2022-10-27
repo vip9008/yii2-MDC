@@ -124,7 +124,7 @@ class NavDrawer extends \yii\base\Widget
         $scrollerBegin = '';
         $scrollerEnd = '';
         if ($this->customScroller) {
-            Html::addCssClass($this->scrollerOptions, 'overlay-scrollbars');
+            Html::addCssClass($this->scrollerOptions, 'overlay-scrollbar-y');
             $scrollerBegin .= Html::beginTag('div', $this->scrollerOptions)."\n";
             $scrollerEnd .= Html::endTag('div')."\n";
         }
