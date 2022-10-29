@@ -162,6 +162,7 @@ class ActiveField extends BaseActiveField
         }
 
         Html::addCssClass($this->options, ['mdc-list-item']);
+        $this->options['tag'] = 'label';
 
         $options = array_merge($this->inputOptions, $options);
         Html::addCssClass($options, $this->themeColor);
