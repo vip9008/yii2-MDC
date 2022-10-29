@@ -205,7 +205,7 @@ class ActiveField extends BaseActiveField
             $error_message = ArrayHelper::remove($options, 'errorMessage', "Can't find any match!");
         }
 
-        $buttonTag = ArrayHelper::remove($options, 'dropdownButtonTag', ($dropDownListType = 'searchable' ? "div" : "button");
+        $buttonTag = ArrayHelper::remove($options, 'dropdownButtonTag', ($dropDownListType = 'searchable' ? "div" : "button"));
 
         if ($buttonTag == 'button') {
             $options['type'] = 'button';
