@@ -13,6 +13,38 @@ class Html extends BaseHtml
     }
 
     /**
+     * Generates FAB component
+     */
+    private static function fab($icon, $label = null, $options = [])
+    {
+        $iconOptions = ArrayHelper::remove($options, 'icon', []);
+        static::addCssClass($iconOptions, ['icon', 'material-icon']);
+
+        $labelOptions = ArrayHelper::remove($options, 'icon', []);
+        static::addCssClass($labelOptions, 'label');
+
+        $icon = static::tag('div', $icon, $iconOptions);
+
+        if ($label) {
+            $label = static::tag('div', $label, $labelOptions);
+        }
+
+        return $icon."\n".$label;
+    }
+
+    public static function fabA($url, $icon, $label = null, $options = [])
+    {
+        static::addCssClass($options, 'mdc-fab-button');
+        return static::a(static::fab($icon, $label), $url, $options);
+    }
+
+    public static function fabButton($icon, $label = null, $options = [])
+    {
+        static::addCssClass($options, 'mdc-fab-button');
+        return static::button(static::fab($icon, $label), $options);
+    }
+
+    /**
      * Generates a List Item component (List Row).
      * @param string|array $text: the component primary text part. array example,
      *
@@ -735,6 +767,7 @@ class Html extends BaseHtml
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-checkbox');
+                static::addCssClass($options, 'mdc-control');
 
                 return static::tag(
                     'div',
@@ -750,6 +783,7 @@ class Html extends BaseHtml
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-switch');
+                static::addCssClass($options, 'mdc-control');
 
                 return static::tag(
                     'div',
@@ -766,6 +800,7 @@ class Html extends BaseHtml
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-radiobutton');
+                static::addCssClass($options, 'mdc-control');
 
                 $options['type'] = 'radio';
                 $options['name'] = $name;

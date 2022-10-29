@@ -164,6 +164,7 @@ class ActiveField extends BaseActiveField
         }
 
         Html::addCssClass($this->options, ['mdc-list-item']);
+        $this->options['tag'] = 'label';
 
         $options = array_merge($this->inputOptions, $options);
         Html::addCssClass($options, $this->themeColor);
@@ -207,10 +208,13 @@ class ActiveField extends BaseActiveField
             $error_message = ArrayHelper::remove($options, 'errorMessage', "Can't find any match!");
         }
 
-        $buttonTag = ArrayHelper::remove($options, 'dropdownButtonTag', "div");
+        $buttonTag = ArrayHelper::remove($options, 'dropdownButtonTag', ($dropDownListType = 'searchable' ? "div" : "button"));
 
-        $this->template = Html::tag($buttonTag, "\n{value}\n{label}\n{input}\n{hint}\n{error}\n", $options) .
-                          Html::tag('div', "\n{list}\n", ['class' => 'mdc-list-container']);
+        if ($buttonTag == 'button') {
+            $options['type'] = 'button';
+        }
+
+        $this->template = Html::tag($buttonTag, "\n{value}\n{label}\n{input}\n{hint}\n{error}\n", $options) . Html::tag('div', Html::tag('div', "\n{list}\n", ['class' => 'mdc-list-container']), ['class' => 'menu-container']);
 
         $this->options['class'] = 'mdc-menu-container select-menu';
 
