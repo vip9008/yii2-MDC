@@ -61,12 +61,13 @@ class ActiveField extends BaseActiveField
 
         $options = array_merge($this->labelOptions, $options);
         Html::addCssClass($options, 'label');
+        $tag = ArrayHelper::remove($options, 'tag', 'label');
 
         if ($label === null) {
             $label = $this->model->getAttributeLabel($this->attribute);
         }
 
-        $this->parts['{label}'] = Html::tag('label', $label, $options);
+        $this->parts['{label}'] = Html::tag($tag, $label, $options);
 
         return $this;
     }
@@ -147,6 +148,7 @@ class ActiveField extends BaseActiveField
     protected function booleanField($type, $options = [], $enclosedByLabel = true)
     {
         $this->template = "\n{input}\n";
+        $this->labelOptions['tag'] = 'div';
         $description = ArrayHelper::remove($options, 'description', '');
 
         if ($enclosedByLabel) {
@@ -155,9 +157,9 @@ class ActiveField extends BaseActiveField
                 $label .= Html::tag('div', $description, ['class' => 'secondary']) . "\n";
                 Html::addCssClass($this->options, ['md-3line']);
             }
-            $this->template = "\n{input}\n" . Html::tag('div', $label, ['class' => 'text']) . "\n";
+            $this->template = "\n{input}\n" . Html::tag('div', $label, ['class' => 'text text-secondary']) . "\n";
             if ($type == 'switch') {
-                $this->template = "\n" . Html::tag('div', $label, ['class' => 'text']) . "\n{input}\n";
+                $this->template = "\n" . Html::tag('div', $label, ['class' => 'text text-secondary']) . "\n{input}\n";
             }
         }
 
