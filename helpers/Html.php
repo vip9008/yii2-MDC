@@ -767,6 +767,7 @@ class Html extends BaseHtml
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-checkbox');
+                static::addCssClass($options, 'mdc-control');
 
                 return static::tag(
                     'div',
@@ -782,6 +783,7 @@ class Html extends BaseHtml
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-switch');
+                static::addCssClass($options, 'mdc-control');
 
                 return static::tag(
                     'div',
@@ -798,6 +800,7 @@ class Html extends BaseHtml
                 ];
 
                 static::addCssClass($containerOptions, 'mdc-radiobutton');
+                static::addCssClass($options, 'mdc-control');
 
                 $options['type'] = 'radio';
                 $options['name'] = $name;
