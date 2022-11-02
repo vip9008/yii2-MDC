@@ -1,15 +1,14 @@
 <?php
 
 namespace vip9008\MDC\widgets;
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm as BaseActiveForm;
 
+use yii\helpers\Json;
+use vip9008\MDC\helpers\Html;
 use vip9008\MDC\assets\MenuAsset;
 use vip9008\MDC\assets\SelectionControlAsset;
 use vip9008\MDC\assets\TextFieldAsset;
 
-class ActiveForm extends BaseActiveForm
+class ActiveForm extends \yii\widgets\ActiveForm
 {
     public $options = [];
     public $themeColor = '';
@@ -34,5 +33,13 @@ class ActiveForm extends BaseActiveForm
         }
         
         return parent::field($model, $attribute, $options);
+    }
+
+    public function getClientScript()
+    {
+        $id = $this->options['id'];
+        $options = Json::htmlEncode($this->getClientOptions());
+        $attributes = Json::htmlEncode($this->attributes);
+        return "jQuery('#$id').yiiActiveForm($attributes, $options);";
     }
 }
