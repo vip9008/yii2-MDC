@@ -453,7 +453,7 @@ class Html extends BaseHtml
 
                 static::addCssClass($attrs, 'interactive');
                 $attrs['tabindex'] = '-1';
-                $attrs['data-label'] = $value;
+                $attrs['data-label'] = ArrayHelper::getValue($attrs, 'data-label', $value);
 
                 // if (!empty($value)) {
                 //     $doc = new \DOMDocument();
