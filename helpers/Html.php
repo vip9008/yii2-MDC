@@ -431,7 +431,7 @@ class Html extends BaseHtml
 
                 $lines[] = static::tag('div', "\n" . $groupLabel . "\n" . $content . "\n", $groupAttrs);
             } else {
-                $attrs = ArrayHelper::getValue($options, $key, []);
+                $attrs = ArrayHelper::remove($tagOptions, $key, []);
                 $attrs['data-value'] = (string) $key;
                 ArrayHelper::remove($attrs, 'value');
 
