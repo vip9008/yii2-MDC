@@ -754,7 +754,7 @@ class Html extends BaseHtml
     protected static function booleanInput($type, $name, $checked = false, $options = [])
     {
         $checked = (int) $checked;
-        unset($options['label'], $options['labelOptions'], $options['uncheck']);
+        unset($options['label'], $options['labelOptions']);
 
         if (ArrayHelper::remove($options, 'listItem', false)) {
             unset($options['id']);
