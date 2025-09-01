@@ -192,6 +192,8 @@ class ActiveField extends BaseActiveField
 
     public function dropDownList($items, $options = [])
     {
+        $items = ArrayHelper::htmlEncode($items);
+        
         $selection = ArrayHelper::getValue($options, 'value', Html::getAttributeValue($this->model, $this->attribute));
         
         $options = array_merge($this->options, $options);
